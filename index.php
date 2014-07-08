@@ -6,7 +6,7 @@
 	</head>
  
 	<body>
-		<form name="login" action="controllers/Login.php" method="post">
+		<form name="login" action="../controllers/Login.php" method="post">
 			<table width="510" border="0">
 				<tr>
 					<td colspan="2"><p><strong>Registration Form</strong></p></td>
