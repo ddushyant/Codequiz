@@ -39,6 +39,7 @@ CREATE TABLE question (
     spec            TEXT NOT NULL,
     author          INTEGER UNSIGNED NOT NULL,
     subject         INTEGER UNSIGNED NOT NULL,
+    qtype           ENUM('open','multiple'),
 
     PRIMARY KEY (id),
     CONSTRAINT      `fk_author`  FOREIGN KEY (author) REFERENCES codequizuser(id),
@@ -50,6 +51,7 @@ CREATE TABLE answer (
     id          INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     correct     BOOLEAN NOT NULL DEFAULT FALSE,
     question    INTEGER UNSIGNED NOT NULL,
+    body        TEXT NOT NULL,
 
     PRIMARY KEY (id),
     CONSTRAINT  `fk_question` FOREIGN KEY (answer) REFERENCES question(id)
