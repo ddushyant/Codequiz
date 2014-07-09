@@ -1,4 +1,4 @@
-490-Project
+CS 490 Project
 ===========
 
-CS 490 Project
+Service-Oriented architecture.
