@@ -9,8 +9,8 @@ USE codequiz;
 CREATE TABLE codequizuser (
     id              INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     username        VARCHAR(100) NOT NULL DEFAULT "",
-    account_type    ENUM('student','instructor') NOT NULL,
-
+    account_type    ENUM('student','instructor') NOT NULL DEFAULT 'student',
+    password        BINARY(60) NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -44,7 +44,7 @@ CREATE TABLE question (
     spec            TEXT NOT NULL,
     author          INTEGER UNSIGNED NOT NULL,
     subject         INTEGER UNSIGNED NOT NULL,
-    qtype           ENUM('open','multiple'),
+    qtype           ENUM('open','multiple') NOT NULL DEFAULT 'multiple',
 
     PRIMARY KEY (id),
     KEY idx_fk_author (author),
