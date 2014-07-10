@@ -2,10 +2,9 @@
 
 require('../lib/Toro.php');
 require('ExistHandler.php');
-//require('AuthHandler.php');
-//require('RegistrationHandler.php');
-//require('QuestionCreateHandler.php');
-//require('QuestionGetHandler.php');
+require('AuthHandler.php');
+require('RegistrationHandler.php');
+require('../lib/hash.php');
 require('sql_helper.php');
 
 try {
@@ -23,10 +22,9 @@ try {
 }
 
 Toro::serve(array(
-    "/user/:alpha" => "ExistHandler",
-    "/user/:alpha/exists" => "ExistHandler",
     "/user/auth" => "AuthHandler",
     "/user/register" => "RegistrationHandler",
+    "/user/exist" => "ExistHandler",
     "/question" => "QuestionCreateHandler",
     "/question/:number" => "QuestionGetHandler",
 ));
