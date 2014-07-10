@@ -71,5 +71,20 @@
     <script src="js/flatui-radio.js"></script>
     <script src="js/jquery.tagsinput.js"></script>
     <script src="js/jquery.placeholder.js"></script>
+    <script type="text/javascript">
+        $('form').submit(function(e) {
+            e.preventDefault();
+            console.log("POSTING!");
+            console.log($('form').serialize());
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:3000/app.php/register",
+                data: $('form').serialize(),
+                success: function(data,stat,xhr) {console.log("SUCCESS");console.log(stat);console.log(data);},
+                error: function(xhr,stat,err) {console.log("FAIL");console.log(err);},
+                dataType: "json"
+            });
+        });
+    </script>
   </body>
 </html>

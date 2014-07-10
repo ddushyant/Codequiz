@@ -38,7 +38,7 @@
     <div class="container">
 
       <h3 align="center">Please Sign In</h3>
-      <form class="form-signin" role="form" name="login" action="http://localhost:3000/app.php/auth" method="post">
+      <form class="form-signin" role="form" name="login" method="post">
         <input type="text" name="user" class="form-control flat" placeholder="UCID or Username" required autofocus>
 
         <input type="password" name="pass" class="form-control flat" placeholder="Password" required>
@@ -75,5 +75,20 @@
     <script src="js/flatui-radio.js"></script>
     <script src="js/jquery.tagsinput.js"></script>
     <script src="js/jquery.placeholder.js"></script>
+    <script type="text/javascript">
+        $('form').submit(function(e) {
+            e.preventDefault();
+            console.log("POSTING!");
+            console.log($('form').serialize());
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:3000/app.php/auth",
+                data: $('form').serialize(),
+                success: function(data,stat,xhr) {console.log("SUCCESS");console.log(stat);console.log(data);},
+                error: function(xhr,stat,err) {console.log("FAIL");console.log(err);},
+                dataType: "json"
+            });
+        });
+    </script>
   </body>
 </html>

@@ -28,7 +28,7 @@ function njit_login($user, $pass){
 
 function backend_login($username, $password) {
 	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL,"http://localhost:4000/app.php/user/login");
+	curl_setopt($ch, CURLOPT_URL,"http://localhost:4000/app.php/user/auth");
 	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array(
 		"username" => $username,
 		"password" => $password,
@@ -56,8 +56,13 @@ class AuthHandler {
 			$logged_in = backend_login($username, $password);
 		}
 		
-		if ($logged_in) echo "LOGGED";
-		else echo "NOOOO";
+        header('Content-Type: application/json');
+        header("Access-Control-Allow-Origin: *");
+		if ($logged_in) {
+            echo "LOGGED";
+        } else {
+            echo "NOOOO";
+        }
 
 	}
 }
@@ -65,4 +70,5 @@ class AuthHandler {
 
 Toro::serve(array(
 	"/auth" => "AuthHandler",
+    "/register" => "RegisterHandler",
 ));
