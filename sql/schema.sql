@@ -8,9 +8,8 @@ USE codequiz;
 
 CREATE TABLE codequizuser (
     id              INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-    name            VARCHAR(100) NOT NULL DEFAULT "",
-    email           VARCHAR(100) NOT NULL,
-    account_type    ENUM('instructor','student') DEFAULT 'student',
+    username        VARCHAR(100) NOT NULL DEFAULT "",
+    account_type    ENUM('student','instructor') NOT NULL,
 
     PRIMARY KEY (id)
 );
@@ -27,13 +26,19 @@ CREATE TABLE language (
 CREATE TABLE subject (
     id          INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     title       VARCHAR(100) NOT NULL,
-    language    INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    language    INTEGER UNSIGNED NOT NULL, 
 
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    KEY idx_fk_language (language),
+
     CONSTRAINT  `fk_language` FOREIGN KEY (language) REFERENCES language(id)
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE
 );
 
 
+-- when a question is deleted, so should be any exam referencing
+-- and and answer referencing
 CREATE TABLE question (
     id              INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     spec            TEXT NOT NULL,
@@ -42,8 +47,15 @@ CREATE TABLE question (
     qtype           ENUM('open','multiple'),
 
     PRIMARY KEY (id),
-    CONSTRAINT      `fk_author`  FOREIGN KEY (author) REFERENCES codequizuser(id),
-    CONSTRAINT      `fk_subject` FOREIGN KEY (subject) REFERENCES subject(title),
+    KEY idx_fk_author (author),
+    KEY idx_fk_subject (subject),
+
+    CONSTRAINT      `fk_author`  FOREIGN KEY (author) REFERENCES codequizuser(id)
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE,
+    CONSTRAINT      `fk_subject` FOREIGN KEY (subject) REFERENCES subject(id) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE
 );
 
 
@@ -54,18 +66,26 @@ CREATE TABLE answer (
     body        TEXT NOT NULL,
 
     PRIMARY KEY (id),
-    CONSTRAINT  `fk_question` FOREIGN KEY (answer) REFERENCES question(id)
+    KEY idx_fk_question (question),
+
+    CONSTRAINT  `fk_question` FOREIGN KEY (question) REFERENCES question(id)
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE
 );
 
 
 CREATE TABLE exam (
-    id                      INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-    exam_date               DATETIME NOT NULL,
-    duration_minutes        INTEGER NOT NULL DEFAULT 30,
-    administrator           INTEGER UNSIGNED NOT NULL,
+   id                      INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+   exam_date               DATETIME NOT NULL,
+   duration_minutes        INTEGER NOT NULL DEFAULT 30,
+   administrator           INTEGER UNSIGNED NOT NULL,
 
-    PRIMARY KEY (id),
-    CONSTRAINT              `fk_admin` FOREIGN KEY (administrator) REFERENCES codequizuser(id)
+   PRIMARY KEY (id),
+   KEY idx_fk_admin (administrator),
+
+   CONSTRAINT              `fk_admin` FOREIGN KEY (administrator) REFERENCES codequizuser(id)
+       ON DELETE CASCADE
+       ON UPDATE CASCADE
 );
 
 
@@ -74,7 +94,6 @@ CREATE TABLE examquestion (
     question        INTEGER UNSIGNED NOT NULL,
     exam            INTEGER UNSIGNED NOT NULL,
 
-    PRIMARY KEY     (question,exam),
-    CONSTRAINT      `fk_question` FOREIGN KEY (question) REFERENCES question(id),
-    CONSTRAINT      `fk_exam` FOREIGN KEY (exam) REFERENCES exam(id)
+    PRIMARY KEY     (question,exam)
+
 );
