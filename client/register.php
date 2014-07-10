@@ -37,23 +37,19 @@
 
     <div class="container">
 
-      <h3 align="center">Please Sign In</h3>
+      <h3 align="center">Fill Out This Form</h3>
       <form class="form-signin" role="form" name="login" action="http://localhost:3000/app.php/auth" method="post">
-        <input type="text" name="user" class="form-control flat" placeholder="UCID or Username" required autofocus>
+        <input type="text" name="user" class="form-control flat" placeholder="Enter Your Cool Username Here..">
+        <input type="password" name="pass" class="form-control flat" placeholder="Password">
+        <input type="password" name="pass" class="form-control flat" placeholder="Confirm Your Password">
 
-        <input type="password" name="pass" class="form-control flat" placeholder="Password" required>
-
-        <label class="checkbox" for="checkbox1">
-          <input type="checkbox" name="njit" value="true" data-toggle="checkbox">
-            NJIT login?
-        </label>
-        <button class="btn btn-embossed btn-primary btn-block" type="submit">Sign in</button>
+        <button class="btn btn-embossed btn-primary btn-block" type="submit">Register</button>
       </form>
 
       <div class="row" style="position:absolute; bottom: 20px; width: 80%;">
         <div class="col-md-4">
-          <a class="btn btn-hg btn-primary" href="register.php">
-            Register Here!
+          <a class="btn btn-hg btn-primary" href="index.php">
+            Sign In Here!
           </a>
         </div>
       </div>
