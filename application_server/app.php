@@ -2,6 +2,7 @@
 
 require("../lib/Toro.php");
 
+
 function njit_login($user, $pass){
 	// user=UCID&pass=pass&uuid=0xACA021
 	$ch = curl_init();
@@ -25,8 +26,18 @@ function njit_login($user, $pass){
 	return strpos($result, "loginok.html") !== false;
 }
 
-function backend_login() {
+function backend_login($username, $password) {
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL,"http://localhost:4000/app.php/user/login");
+	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array(
+		"username" => $username,
+		"password" => $password,
+	));
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	$result = curl_exec($ch);
+	curl_close($ch);
 
+	return strpos($result, "200") !== false;
 }
 
 
