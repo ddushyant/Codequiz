@@ -32,7 +32,7 @@ function backend_login($username, $password) {
 	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array(
 		"username" => $username,
 		"password" => $password,
-	));
+	)));
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	$result = curl_exec($ch);
 	curl_close($ch);
