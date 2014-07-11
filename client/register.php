@@ -80,8 +80,8 @@
                 type: "POST",
                 url: "http://localhost:3000/app.php/register",
                 data: $('form').serialize(),
-                success: function(data,stat,xhr) {console.log("SUCCESS");console.log(stat);console.log(data);},
-                error: function(xhr,stat,err) {console.log("FAIL");console.log(err);},
+                success: function(data,stat,xhr) {console.log("status",stat);},
+                error: function(xhr,stat,err) {console.log("err", err);},
                 dataType: "json"
             });
         });

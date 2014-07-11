@@ -11,7 +11,6 @@ class RegistrationHandler {
 
             $hash = $bcrypt->hash($password);
 
-
             $query = MySQL::getInstance()
                 ->prepare("INSERT INTO codequizuser (username, account_type, password) 
                            VALUES (:username, :account_type, :password)");
@@ -21,6 +20,7 @@ class RegistrationHandler {
             $query->bindValue(':password', $hash, PDO::PARAM_STR);
             $query->execute();
         }catch (PDOException $e) {
+            echo $e->getMessage();
             http_response_code(500);
         }
 

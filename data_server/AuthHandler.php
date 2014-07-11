@@ -1,5 +1,4 @@
 <?php
-
 class AuthHandler {
     public function post() {
         try {

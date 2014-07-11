@@ -40,6 +40,20 @@ function backend_login($username, $password) {
 	return strpos($result, "200") !== false;
 }
 
+function send_register_data($username, $password) {
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL,"http://localhost:4000/app.php/user/register");
+	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array(
+		"username" => $username,
+		"password" => $password,
+	)));
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	$result = curl_exec($ch);
+	curl_close($ch);
+
+	return strpos($result, "301") !== false;
+}
+
 
 class AuthHandler {
 	public function post() {
@@ -67,6 +81,27 @@ class AuthHandler {
 	}
 }
 
+class RegisterHandler{
+	public function post() {
+
+		$success = false;
+
+		$username = $_POST['user'];
+		$password = $_POST['pass'];
+
+
+		$success = send_register_data($username, $password);
+
+		header('Content-Type: application/json');
+ 		header("Access-Control-Allow-Origin: *");
+		if ($success){
+			echo '{"message":"YES"}';
+		}else{
+			echo '{"message":"NO"}';
+		}
+
+	}
+}
 
 Toro::serve(array(
 	"/auth" => "AuthHandler",
