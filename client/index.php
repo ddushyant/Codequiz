@@ -34,7 +34,8 @@
   </head>
 
   <body>
-
+    <div id="flash">
+    </div>
     <div class="container">
 
       <h3 align="center">Please Sign In</h3>
@@ -78,14 +79,17 @@
     <script type="text/javascript">
         $('form').submit(function(e) {
             e.preventDefault();
-            console.log("POSTING!");
-            console.log($('form').serialize());
             $.ajax({
                 type: "POST",
                 url: "http://localhost:3000/app.php/auth",
                 data: $('form').serialize(),
-                success: function(data,stat,xhr) {console.log("SUCCESS");console.log(stat);console.log(data);},
-                error: function(xhr,stat,err) {console.log("FAIL");console.log(err);},
+                success: function(data,stat,xhr) {
+                    console.log("Success: ",data);
+                    $('#flash').html(data['message']);
+                },
+                error: function(xhr,stat,err) {
+                    console.log("Fail: ", err);
+                },
                 dataType: "json"
             });
         });

@@ -27,6 +27,8 @@ function njit_login($user, $pass){
 }
 
 function backend_login($username, $password) {
+    header('Content-Type: application/json');
+    header("Access-Control-Allow-Origin: *");
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL,"http://localhost:4000/app.php/user/auth");
 	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array(
@@ -35,9 +37,12 @@ function backend_login($username, $password) {
 	)));
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	$result = curl_exec($ch);
+
+    $code = (string)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
 	curl_close($ch);
 
-	return strpos($result, "200") !== false;
+	return $code === "204";
 }
 
 function send_register_data($username, $password) {
@@ -51,6 +56,7 @@ function send_register_data($username, $password) {
 	$result = curl_exec($ch);
 	curl_close($ch);
 
+    echo $result;
 	return strpos($result, "301") !== false;
 }
 
@@ -58,8 +64,10 @@ function send_register_data($username, $password) {
 class AuthHandler {
 	public function post() {
 
+        header("Access-Control-Allow-Origin: *");
+
 		$username = $_POST['user'];
-		$password = $_POST['pass'];       // should be hashing this with bcrypt or something
+		$password = $_POST['pass'];      
 		$is_external = $_POST['njit'] === "true";    // boolean to auth against NJIT or CodeQuiz Backend
 		$logged_in = false;
 
@@ -71,11 +79,10 @@ class AuthHandler {
 		}
 		
         header('Content-Type: application/json');
-        header("Access-Control-Allow-Origin: *");
 		if ($logged_in) {
-            echo "LOGGED";
+			echo '{"message":"YES"}';
         } else {
-            echo "NOOOO";
+			echo '{"message":"NO"}';
         }
 
 	}
@@ -95,9 +102,7 @@ class RegisterHandler{
 		header('Content-Type: application/json');
  		header("Access-Control-Allow-Origin: *");
 		if ($success){
-			echo '{"message":"YES"}';
 		}else{
-			echo '{"message":"NO"}';
 		}
 
 	}
