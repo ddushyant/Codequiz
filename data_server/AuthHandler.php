@@ -5,7 +5,7 @@ class AuthHandler {
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            $rounds = 15;
+            $rounds = 5;
             $bcrypt = new Bcrypt($rounds);
 
             $hash = $bcrypt->hash($password);
@@ -25,24 +25,19 @@ class AuthHandler {
 
             if ($n && $bcrypt->verify($password,$db_hashed_password)) {
                 http_response_code(204);
+                die();
             }else {
                 http_response_code(401);
+                die();
             }
         }catch (PDOException $e) {
-            $err = $e->getMessage();
-            $file = 'out.txt';
 
-            // Open the file to get existing content
-            $current = file_get_contents($file);
-            // Append a new person to the file
-            $current .= $err . '\n';
-            // Write the contents back to the file
-            file_put_contents($file, $current);
-
-            echo json_encode(array(
+            $err = array(
                 "error" => $e->getMessage()
-            ));
+            );
+
             http_response_code(500);
+            die(json_encode($err));
         }
     }
 }
