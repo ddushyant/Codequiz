@@ -10,15 +10,21 @@ class AuthHandler {
 		if ($is_external) {
 			$username = str_replace("@njit.edu", "", $username);
 			$logged_in = $this -> njit_login($username, $password);
+			if ($logged_in) {
+				echo '{"message":"Logged in using NJIT credentials"}';
+			} else {
+				echo '{"message":"NJIT Login Failed"}';
+			}
 		}else {
 			$logged_in = $this -> backend_login($username, $password);
+			if ($logged_in) {
+			echo '{"message":"Logged in using CodeQuiz credentials"}';
+			} else {
+			echo '{"message":"CodeQuiz Login Failed"}';
+			}
 		}
 
-		if ($logged_in) {
-			echo '{"message":"YES"}';
-		} else {
-			echo '{"message":"NO"}';
-		}
+		
 
 	}
 
@@ -48,7 +54,7 @@ class AuthHandler {
 	private function backend_login($username, $password) {
 		header('Content-Type: application/json');
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL,"$DATA_SERVER_BASE_URL/user/auth");
+		curl_setopt($ch, CURLOPT_URL,"http://web.njit.edu/~arm32/data_server/app.php/user/auth");
 		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array(
 			"username" => $username,
 			"password" => $password,

@@ -37,8 +37,7 @@ $APP_SERVER_BASE_URL = "http://web.njit.edu/~jdl38/application_server/app.php";
   </head>
 
   <body>
-    <div id="flash">
-    </div>
+    
     <div class="container">
 
       <form class="form-signin" role="form" name="login" method="post" >
@@ -49,8 +48,9 @@ $APP_SERVER_BASE_URL = "http://web.njit.edu/~jdl38/application_server/app.php";
         <input type="password" name="pass" class="form-control flat" placeholder="Confirm Your Password">
 
         <button class="btn btn-embossed btn-primary btn-block" type="submit">Register</button>
+        <div id="flash" style="color: white;"></div>
       </form>
-
+      
       <div class="row" style="position:absolute; bottom: 20px; width: 80%;">
         <div class="col-md-4">
           <a class="btn btn-hg btn-primary" href="index.php">
