@@ -11,7 +11,8 @@ CREATE TABLE codequizuser (
     username        VARCHAR(100) NOT NULL DEFAULT "",
     account_type    ENUM('student','instructor') NOT NULL DEFAULT 'student',
     password        BINARY(60) NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    UNIQUE KEY `unique_username` (username)
 );
 
 

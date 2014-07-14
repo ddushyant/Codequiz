@@ -1,13 +1,14 @@
 <?php
 class RegistrationHandler {
-    public function post() {
-        $data = array();
+  public function post() {
+      $data = array();
+
         try {
             $username = $_POST['username'];
             $password = $_POST['password'];
             $account_type = isset($_POST['account_type']) ? $_POST['account_type'] : 'student';
 
-            $rounds = 15;
+            $rounds = 5;
             $bcrypt = new Bcrypt($rounds);
 
             $hash = $bcrypt->hash($password);
@@ -25,14 +26,17 @@ class RegistrationHandler {
             $query->execute();
 
         }catch (PDOException $e) {
-            echo json_encode($data);
             http_response_code(500);
+            $err = array(
+                "error" => $e->getMessage(),
+            );
+
+            die(json_encode($err));
         }
 
         // entity created
-        echo json_encode($data);
-        http_response_code(301);
-
+        http_response_code(201);
+        die(json_encode($data));
     }
 }
 ?>
