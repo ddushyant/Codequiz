@@ -1,0 +1,2 @@
+Header set Content-Type "application/json"
+Header set Allow-Control-Allow-Origin "*"
