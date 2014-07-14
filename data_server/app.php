@@ -1,9 +1,5 @@
 <?php
 
-$DB_SERVER_URL  = $_ENV['DB_SERVER_URL'];
-$DB_USER        = $_ENV['DB_USER'];
-$DB_PASSWORD    = $_ENV['DB_PASSWORD'];
-
 require('../lib/Toro.php');
 require('ExistHandler.php');
 require('AuthHandler.php');
