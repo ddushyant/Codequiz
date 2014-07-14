@@ -1,5 +1,5 @@
 <?php
-$APP_SERVER_BASE_URL = $_ENV["APP_SERVER_BASE_URL"];
+$APP_SERVER_BASE_URL = "http://web.njit.edu/~jdl38/application_server/app.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,17 +39,18 @@ $APP_SERVER_BASE_URL = $_ENV["APP_SERVER_BASE_URL"];
   <body>
     <div id="flash">
     </div>
-    <div class="container">
+    <div class="container" >
 
-      <h3 align="center">Please Sign In</h3>
       <form class="form-signin" role="form" name="login" method="post">
+        <h3 align="center" >Please Sign In</h3>
+
         <input type="text" name="user" class="form-control flat" placeholder="UCID or Username" required autofocus>
 
         <input type="password" name="pass" class="form-control flat" placeholder="Password" required>
 
         <label class="checkbox" for="checkbox1">
-          <input type="checkbox" name="njit" value="true" data-toggle="checkbox">
-            NJIT login?
+          <input type="checkbox" name="njit" value="true" data-toggle="checkbox" >
+            <span style="color: #1ABC9C;">NJIT login?</span>
         </label>
         <button class="btn btn-embossed btn-primary btn-block" type="submit">Sign in</button>
       </form>

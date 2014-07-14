@@ -2,13 +2,22 @@ body {
   padding-top: 40px;
   padding-bottom: 40px;
   background-color: #eee;
+  background:url('http://thecatapi.com/api/images/get?format=src&type=gif') no-repeat fixed center; 
+  background-size: 100%;
 }
 
 .form-signin {
-  max-width: 330px;
+  max-width: 380px;
   padding: 15px;
   margin: 0 auto;
+  background: rgba(54, 25, 25, .5);
 }
+
+.form-signin h3{
+  margin-top: -10px; 
+  color: #1ABC9C;
+}
+
 .form-signin .form-signin-heading,
 .form-signin .checkbox {
   margin-bottom: 10px;
