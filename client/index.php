@@ -1,3 +1,6 @@
+<?php
+$APP_SERVER_BASE_URL = $_ENV["APP_SERVER_BASE_URL"];
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -81,7 +84,7 @@
             e.preventDefault();
             $.ajax({
                 type: "POST",
-                url: "http://localhost:3000/app.php/auth",
+                url: "<?php echo $APP_SERVER_BASE_URL; ?>/auth",
                 data: $('form').serialize(),
                 success: function(data,stat,xhr) {
                     console.log("Success: ",data);

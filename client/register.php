@@ -1,3 +1,6 @@
+<?php
+$APP_SERVER_BASE_URL = $_ENV["APP_SERVER_BASE_URL"];
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -38,7 +41,7 @@
     <div class="container">
 
       <h3 align="center">Fill Out This Form</h3>
-      <form class="form-signin" role="form" name="login" action="http://localhost:3000/app.php/auth" method="post">
+      <form class="form-signin" role="form" name="login" method="post">
         <input type="text" name="user" class="form-control flat" placeholder="Enter Your Cool Username Here..">
         <input type="password" name="pass" class="form-control flat" placeholder="Password">
         <input type="password" name="pass" class="form-control flat" placeholder="Confirm Your Password">
@@ -74,11 +77,10 @@
     <script type="text/javascript">
         $('form').submit(function(e) {
             e.preventDefault();
-            console.log("POSTING!");
             console.log($('form').serialize());
             $.ajax({
                 type: "POST",
-                url: "http://localhost:3000/app.php/register",
+                url: "<?php echo $APP_SERVER_BASE_URL; ?>/register",
                 data: $('form').serialize(),
                 success: function(data,stat,xhr) {console.log("status",stat);},
                 error: function(xhr,stat,err) {console.log("err", err);},
