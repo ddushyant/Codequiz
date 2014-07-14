@@ -10,17 +10,22 @@ class MySQL {
     private function __clone() { }
 
     public static function getInstance() {
-        if (!self::$instance) {
+      if (!self::$instance) {
+        try {
             self::$instance = new PDO(
-                'mysql:host=localhost;dbname=codequiz', 
-                'codequiz', 
-                'foobar',
+                $DB_SERVER_URL,
+                $DB_USER,
+                $DB_PASSWORD,
                 array(
                     PDO::ATTR_EMULATE_PREPARES => false,
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_PERSISTENT => true
                 )
-            );
+              );
+        }catch (PDOException $e) {
+          echo $e->getMessage();
         }
+      }
         return self::$instance;
     }
 }
