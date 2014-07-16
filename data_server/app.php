@@ -9,11 +9,12 @@ require('sql_helper.php');
 
 
 Toro::serve(array(
-    "/user/auth" => "AuthHandler",
-    "/user/register" => "RegistrationHandler",
-    "/user/exist" => "ExistHandler",
-    "/question" => "QuestionCreateHandler",
-    "/question/:number" => "QuestionGetHandler",
+    "/user/auth"                => "AuthHandler",
+    "/user/register"            => "RegistrationHandler",
+    "/user/exist"               => "ExistHandler",
+    "/question"                 => "QuestionCreateHandler",
+    "/question/:number"         => "QuestionGetHandler",
+    "/question/author/:alpha"   => "MultipleQuestionGetHandler",
 ));
 
 ?>

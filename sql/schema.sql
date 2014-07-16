@@ -42,10 +42,11 @@ CREATE TABLE subject (
 -- and and answer referencing
 CREATE TABLE question (
     id              INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    title           VARCHAR(1000) NOT NULL,
     spec            TEXT NOT NULL,
     author          INTEGER UNSIGNED NOT NULL,
     subject         INTEGER UNSIGNED NOT NULL,
-    qtype           ENUM('open','multiple') NOT NULL DEFAULT 'multiple',
+    qtype           ENUM('open','multiple','true-false','coding') NOT NULL,
 
     PRIMARY KEY (id),
     KEY idx_fk_author (author),
@@ -59,12 +60,18 @@ CREATE TABLE question (
         ON UPDATE CASCADE
 );
 
-
+-- answers come in key<->value pairs
+-- such as A -> foo
+--         B -> bar
+--
+-- in the case of open-ended
+-- leave key empty and just fill the answer_value
 CREATE TABLE answer (
-    id          INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-    correct     BOOLEAN NOT NULL DEFAULT FALSE,
-    question    INTEGER UNSIGNED NOT NULL,
-    body        TEXT NOT NULL,
+    id              INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    correct         BOOLEAN NOT NULL DEFAULT FALSE,
+    question        INTEGER UNSIGNED NOT NULL,
+    answer_key      ENUM('A','B','C','D') DEFAULT NULL,
+    answer_value    TEXT NOT NULL,
 
     PRIMARY KEY (id),
     KEY idx_fk_question (question),
