@@ -44,17 +44,12 @@ CREATE TABLE question (
     id              INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     title           VARCHAR(1000) NOT NULL,
     spec            TEXT NOT NULL,
-    author          INTEGER UNSIGNED NOT NULL,
     subject         INTEGER UNSIGNED NOT NULL,
     qtype           ENUM('open','multiple','true-false','coding') NOT NULL,
 
     PRIMARY KEY (id),
-    KEY idx_fk_author (author),
     KEY idx_fk_subject (subject),
 
-    CONSTRAINT      `fk_author`  FOREIGN KEY (author) REFERENCES codequizuser(id)
-        ON DELETE CASCADE 
-        ON UPDATE CASCADE,
     CONSTRAINT      `fk_subject` FOREIGN KEY (subject) REFERENCES subject(id) 
         ON DELETE CASCADE 
         ON UPDATE CASCADE
@@ -84,16 +79,12 @@ CREATE TABLE answer (
 
 CREATE TABLE exam (
    id                      INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+   exam_title              VARCHAR(200) NOT NULL,
    exam_date               DATETIME NOT NULL,
    duration_minutes        INTEGER NOT NULL DEFAULT 30,
-   administrator           INTEGER UNSIGNED NOT NULL,
 
-   PRIMARY KEY (id),
-   KEY idx_fk_admin (administrator),
+   PRIMARY KEY (id)
 
-   CONSTRAINT              `fk_admin` FOREIGN KEY (administrator) REFERENCES codequizuser(id)
-       ON DELETE CASCADE
-       ON UPDATE CASCADE
 );
 
 
