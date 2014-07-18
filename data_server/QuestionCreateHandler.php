@@ -27,7 +27,7 @@ class QuestionCreateHandler {
 
         $answers  = $data['answers'];
 
-
+        $response = array();
 
 
         /*
@@ -94,6 +94,8 @@ class QuestionCreateHandler {
             /* END question CREATE transaction */
             $conn->commit();
 
+            $response['question_id'] = $question_id;
+
        } catch (PDOException $e) {
 
 
@@ -105,11 +107,11 @@ class QuestionCreateHandler {
            die(json_encode($err));
        }
 
-       $response = array(
-            "status" => "success",
-            "message" => "",
-       );
        http_response_code(201);
+
+       $response['status'] = "success";
+       $response['message'] = "";
+
        die(json_encode($response));
        
     }
