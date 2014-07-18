@@ -79,6 +79,7 @@ CREATE TABLE answer (
 
 CREATE TABLE exam (
    id                      INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+   exam_title              VARCHAR(200) NOT NULL,
    exam_date               DATETIME NOT NULL,
    duration_minutes        INTEGER NOT NULL DEFAULT 30,
 
