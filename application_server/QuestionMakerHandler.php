@@ -28,9 +28,7 @@ class QuestionMakerHandler{
 		curl_setopt($ch, CURLOPT_HEADER  , true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array(
 			"title" => $title,
-			"author" => "1",
 			"spec" => $body,
-			"language" => $language,
 			"subject" => $subject,
 			"qtype" => $qtype,
 			"answers" => $answers
