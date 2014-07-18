@@ -1,4 +1,4 @@
-CS 490 Project
+Codequiz
 ===========
 
-Service-Oriented architecture.
+3 Tier architecture application.
