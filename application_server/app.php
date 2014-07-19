@@ -9,7 +9,7 @@ require('ExamMakerHandler.php');
 Toro::serve(array(
 	"/auth" => "AuthHandler",
 	"/register" => "RegisterHandler",
-	"/questionmaker" => "QuestionMakerHandler",
+	"/question" => "QuestionMakerHandler",
 	"/exammaker" => "ExamMakerHandler",
 ));
 

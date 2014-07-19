@@ -87,6 +87,7 @@
 
         });
 
+        // multiple choice
 	    jQuery("#action-1").click(function(e){
 	    	$("#mult").html("");
 			$("#mult").append('<div class="form-group"><input type="text" name="mult_answer" class="form-control flat" placeholder="Enter Correct Answer Here" required autofocus></div>');
@@ -96,6 +97,7 @@
             $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='multi'>");
 		});
 
+        // true false
 	    jQuery("#action-2").click(function(e){
 	    	$("#mult").html("");
             $("#mult").append('<label class="radio checked"><span class="icons"><span class="first-icon fui-radio-unchecked"></span><span class="second-icon fui-radio-checked"></span></span><input type="radio" name="group1" value="True" data-toggle="radio" checked>Answer is True</label>');
@@ -103,12 +105,14 @@
             $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='true-false'>");
 		});
 
+        // open-ended
 		jQuery("#action-3").click(function(e){
 			$("#mult").html("");
 			$("#mult").append('<div class="form-group"><input type="text" name="open_answer" class="form-control flat" placeholder="Enter Correct Answer Here" required autofocus></div>');
             $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='open'>");
 		});
 
+        // coding question
 		jQuery("#action-4").click(function(e){
 			$("#mult").html("");
 	        $("#mult").append('<div class="form-group"><input type="text" name="code_answer" class="form-control flat" placeholder="Enter the Desired Output" required autofocus></div>');

@@ -1,5 +1,7 @@
 <?php
 
+require('post_helper.php');
+
 class RegisterHandler{
 	public function post() {
 
