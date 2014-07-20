@@ -176,13 +176,22 @@
 
     <script type="text/javascript" src="js/amalgation.min.js"></script>
     <script type="text/javascript">
+
+    var cur_total = 0;
+    var total_receiver = $('#total-receiver');
+    
+     $("input[type='number']").each(function() {      
+        console.log($(this).val());
+        cur_total = parseInt($(this).attr('value')) + cur_total;
+     });
+    total_receiver.text("Total: " + cur_total.toString());
+
     var exam_title_receiver = $('#exam-title-receive');
     $('#exam-title').on('input', function(e) {
         console.log("THERE WASD A CHANGE");
         exam_title_receiver.text($(this).val());
     });
-    var cur_total = 0;
-    var total_receiver = $('#total-receiver');
+
     $("input[type='number']").on('input', function(e) {
         cur_total = 0;
          $("input[type='number']").each(function() {      
