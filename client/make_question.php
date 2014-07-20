@@ -88,6 +88,116 @@ button .out {
   
     <script type="text/javascript">
 
+    function send_data(answers) {
+            var qtype = $('#qtype');
+
+            var request = {};
+
+            request['title'] = $("form input[name='question_title']").val();
+            request['body'] = $("form textarea[name='question_body']").val();
+            request['subject'] = $("form span[id='subject']").text().toLowerCase();
+            request['qtype'] = qtype.val();
+            request['answers'] = answers;
+
+
+            $.ajax({
+                type: 'POST',
+                url: '/test.php',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify(request),
+                success: function(data,stat,xhr) {
+                    $('#flash').html(data['message']);
+                },
+                error: function(xhr,stat,err) {
+                    console.log("err", err);
+                },
+            });
+    }
+
+    function register_multi_hooks() {
+        
+        $('form').submit(function(e) {
+            e.preventDefault();
+
+            var acc = [];    // collect answers
+            var obj = {};
+
+            $("#mult input:not([type='hidden'])").each(function(iter) {
+                if ($(this).attr("name") === "mult_answer") {
+                    obj = {
+                        'answer_key' : iter,
+                        'answer_value' : this.value,
+                        'correct': true
+                    };
+                } else {
+
+                    obj = {
+                        'answer_key' : iter,
+                        'answer_value' : this.value,
+                        'correct': false
+                    };
+                }
+                
+                
+                acc.push(obj);
+            });
+
+            send_data(acc);   // sending off common form info
+
+        });
+    }
+
+
+    function register_truefalse_hooks() {
+        $('form').submit(function(e) {
+            e.preventDefault();
+
+            var acc = [];   // collect answers
+            var obj = {};
+
+
+            var group1 = $("#mult input[name='group1']:checked");
+
+            if (group1.length > 0) {
+                acc.push({
+                    "answer_key":"0",
+                    "answer_value":group1.val(),
+                    "correct": true
+                });
+            }
+
+            send_data(acc);   // sending off common form info
+
+        });
+    }
+
+
+    function register_open_hooks() {
+        $('form').submit(function(e) {
+            e.preventDefault();
+
+            var acc = [];    // collect answers
+            var obj = {};
+
+            $("#mult input:not([type='hidden'])").each(function(iter) {
+
+                obj = {
+                    'answer_key' : iter,
+                    'answer_value' : this.value,
+                    'correct': true
+                };
+                
+                acc.push(obj);
+            });
+
+            send_data(acc);   // sending off common form info
+
+        });
+        
+    }
+
+
     function register_coding_hooks() {
 
 		$('#add_btn').click(function(e) {
@@ -107,7 +217,7 @@ button .out {
 		$('form').submit(function(e) {
 			
 			e.preventDefault();
-			var acc = [];
+			var acc = [];   // collect answers
 			var answer;
 
 			$('ul .inout').each(function(idx) {
@@ -122,65 +232,9 @@ button .out {
 
 				acc.push(answer);
 			});
-			console.log(acc);
+
+            send_data(acc);   // sending off common form info
 		});
-    }
-
-    function register_default_hooks() {
-        $('form').submit(function(e) {
-            e.preventDefault();
-
-            var request = {};
-
-            var acc = [];
-            var obj = {};
-
-            $("#mult input:not([type='radio'],[type='hidden'])").each(function(iter) {
-                
-
-                obj = {
-                    'answer_key' : iter,
-                    'answer_value' : this.value
-                };
-                
-                
-                acc.push(obj);
-            });
-
-            var group1 = $("#mult input[name='group1']:checked");
-
-            if (group1.length > 0) {
-                acc.push({
-                    "answer_key":"tf",
-                    "answer_value":group1.val()
-                });
-            }
-
-            var qtype = $('#qtype');
-
-            request['title'] = $("form input[name='question_title']").val();
-            request['body'] = $("form textarea[name='question_body']").val();
-            request['subject'] = $("form span[id='subject']").text().toLowerCase();
-            request['qtype'] = qtype.val();
-            request['answers'] = acc;
-
-
-            $.ajax({
-                type: 'POST',
-                url: '/test.php',
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                data: JSON.stringify(request),
-                success: function(data,stat,xhr) {
-                    $('#flash').html(data['message']);
-                },
-                error: function(xhr,stat,err) {
-                    console.log("err", err);
-                },
-            });
-
-
-        });
     }
 
 
@@ -195,6 +249,7 @@ button .out {
 
         });
 
+        // multiple choice
 	    jQuery("#action-1").click(function(e){
 	    	$("#mult").html("");
 			$("#mult").append('<div class="form-group"><input type="text" name="mult_answer" class="form-control flat" placeholder="Enter Correct Answer Here" required autofocus></div>');
@@ -202,30 +257,32 @@ button .out {
 			$("#mult").append('<div class="form-group"><input type="text" name="opt2" class="form-control flat" placeholder="Option 2" required autofocus></div>');
 			$("#mult").append('<div class="form-group"><input type="text" name="opt3" class="form-control flat" placeholder="Option 3" required></div>'); 
             $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='multi'>");
+            register_multi_hooks();
 		});
 
+        // true false
 	    jQuery("#action-2").click(function(e){
 	    	$("#mult").html("");
             $("#mult").append('<label class="radio checked"><span class="icons"><span class="first-icon fui-radio-unchecked"></span><span class="second-icon fui-radio-checked"></span></span><input type="radio" name="group1" value="True" data-toggle="radio" checked>Answer is True</label>');
             $("#mult").append('<label class="radio"><span class="icons"><span class="first-icon fui-radio-unchecked"></span><span class="second-icon fui-radio-checked"></span></span><input type="radio" name="group1" value="False" data-toggle="radio">Answer is False</label>');
             $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='true-false'>");
+            register_truefalse_hooks();
 		});
 
+        // open-ended
 		jQuery("#action-3").click(function(e){
 			$("#mult").html("");
 			$("#mult").append('<div class="form-group"><input type="text" name="open_answer" class="form-control flat" placeholder="Enter Correct Answer Here" required autofocus></div>');
             $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='open'>");
+            register_open_hooks();
 		});
 
+        // coding question
 		jQuery("#action-4").click(function(e){
             var html = '<button id="add_btn" class="btn">Add</button><ul id="inoutlist"><li class="inout"><input type="text" class="in" placeholder="Input"><input type="text" class="out" placeholder="Output"></li></ul>';
 			$("#mult").html(html);
             register_coding_hooks();
 		});
 	</script>
-
-	 <script type="text/javascript">
-    </script>
-   
 </body>
 </html>
