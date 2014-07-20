@@ -5,13 +5,9 @@ class QuestionGetHandler {
        try {
            $query = MySQL::getInstance()
                   ->prepare(
-                    "SELECT (title,spec,author,subject,qtype)
+                    "SELECT title,spec,subject,qtype
                      FROM question
                      WHERE qid=:qid;
-
-                     SELECT (correct,question,answer_key,answer_value)
-                     FROM answer
-                     WHERE question=:qid;
                     "
                    );
            $query->bindValue(":qid", $qid, PDO::PARAM_INT);

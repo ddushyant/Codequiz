@@ -65,7 +65,7 @@ CREATE TABLE answer (
     id              INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     correct         BOOLEAN NOT NULL DEFAULT FALSE,
     question        INTEGER UNSIGNED NOT NULL,
-    answer_key      ENUM('A','B','C','D') DEFAULT NULL,
+    answer_key      VARCHAR(128) NOT NULL,
     answer_value    TEXT NOT NULL,
 
     PRIMARY KEY (id),

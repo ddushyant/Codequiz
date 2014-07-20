@@ -2,6 +2,18 @@
 
 <body>
 
+<style>
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+button .out {
+    width: 60px;
+}
+</style>
+
     <div class="container">
 
         <form class="question-form" role="form" name="question_maker" method="post" >
@@ -76,6 +88,102 @@
   
     <script type="text/javascript">
 
+    function register_coding_hooks() {
+
+		$('#add_btn').click(function(e) {
+			e.preventDefault();
+			var clone = $('.inout:first').clone();
+			clone.children().val("");
+            clone.append('<button type="button" class="btn remove_button">Remove</button>');
+			$('#inoutlist').append(clone);
+
+		});
+
+        $('#inoutlist').on("click", ".remove_button", function(e) {
+            $(this).parent().remove();
+        });
+
+
+		$('form').submit(function(e) {
+			
+			e.preventDefault();
+			var acc = [];
+			var answer;
+
+			$('ul .inout').each(function(idx) {
+				var input = $(this).find(".in");
+				var output = $(this).find(".out");
+
+				answer = {
+					answer_key: input.val(),
+					answer_value: output.val(),
+					correct: true
+				}
+
+				acc.push(answer);
+			});
+			console.log(acc);
+		});
+    }
+
+    function register_default_hooks() {
+        $('form').submit(function(e) {
+            e.preventDefault();
+
+            var request = {};
+
+            var acc = [];
+            var obj = {};
+
+            $("#mult input:not([type='radio'],[type='hidden'])").each(function(iter) {
+                
+
+                obj = {
+                    'answer_key' : iter,
+                    'answer_value' : this.value
+                };
+                
+                
+                acc.push(obj);
+            });
+
+            var group1 = $("#mult input[name='group1']:checked");
+
+            if (group1.length > 0) {
+                acc.push({
+                    "answer_key":"tf",
+                    "answer_value":group1.val()
+                });
+            }
+
+            var qtype = $('#qtype');
+
+            request['title'] = $("form input[name='question_title']").val();
+            request['body'] = $("form textarea[name='question_body']").val();
+            request['subject'] = $("form span[id='subject']").text().toLowerCase();
+            request['qtype'] = qtype.val();
+            request['answers'] = acc;
+
+
+            $.ajax({
+                type: 'POST',
+                url: '/test.php',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify(request),
+                success: function(data,stat,xhr) {
+                    $('#flash').html(data['message']);
+                },
+                error: function(xhr,stat,err) {
+                    console.log("err", err);
+                },
+            });
+
+
+        });
+    }
+
+
         $(".dropdown-menu li a").click(function(){
 
           $(this).parents(".btn-group").find('#lang').text($(this).text());
@@ -110,68 +218,13 @@
 		});
 
 		jQuery("#action-4").click(function(e){
-			$("#mult").html("");
-	        $("#mult").append('<div class="form-group"><input type="text" name="code_answer" class="form-control flat" placeholder="Enter the Desired Output" required autofocus></div>');
-            $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='coding'>");
+            var html = '<button id="add_btn" class="btn">Add</button><ul id="inoutlist"><li class="inout"><input type="text" class="in" placeholder="Input"><input type="text" class="out" placeholder="Output"></li></ul>';
+			$("#mult").html(html);
+            register_coding_hooks();
 		});
 	</script>
 
 	 <script type="text/javascript">
-    $('form').submit(function(e) {
-        e.preventDefault();
-
-        var request = {};
-
-        var acc = [];
-        var obj = {};
-
-        $("#mult input:not([type='radio'],[type='hidden'])").each(function(iter) {
-            
-
-            obj = {
-                'answer_key' : iter,
-                'answer_value' : this.value
-            };
-            
-            
-            acc.push(obj);
-        });
-
-        var group1 = $("#mult input[name='group1']:checked");
-
-        if (group1.length > 0) {
-            acc.push({
-                "answer_key":"tf",
-                "answer_value":group1.val()
-            });
-        }
-
-        var qtype = $('#qtype');
-
-        request['title'] = $("form input[name='question_title']").val();
-        request['body'] = $("form textarea[name='question_body']").val();
-        request['language'] = $("form span[id='lang']").text().toLowerCase();
-        request['subject'] = $("form span[id='subject']").text().toLowerCase();
-        request['qtype'] = qtype.val();
-        request['answers'] = acc;
-
-
-        $.ajax({
-            type: 'POST',
-            url: '/test.php',
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            data: JSON.stringify(request),
-            success: function(data,stat,xhr) {
-                $('#flash').html(data['message']);
-            },
-            error: function(xhr,stat,err) {
-                console.log("err", err);
-            },
-        });
-
-
-    });
     </script>
    
 </body>
