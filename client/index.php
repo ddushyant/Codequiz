@@ -39,18 +39,29 @@
     <script type="text/javascript">
     $('form').submit(function(e) {
         e.preventDefault();
+        var request = {};
+        var formArr = $(this).serializeArray();
+
+        for (var i in formArr) {
+            request[formArr[i].name] = formArr[i].value;
+        }
+
         $.ajax({
             type: "POST",
             url: "<?php echo $APP_SERVER_BASE_URL; ?>/auth",
-            data: $('form').serialize(),
+            data: JSON.stringify(request),
+            dataType: "json",
+
             success: function(data,stat,xhr) {
                 console.log("Success: ",data);
                 $('#flash').html(data['message']);
             },
             error: function(xhr,stat,err) {
-                console.log("Fail: ", err);
+                if (err.status === 401) {
+                    console.log("Unauthorized");
+                    $('#flash').html("Unauthorized");
+                }
             },
-            dataType: "json"
         });
     });
     </script>

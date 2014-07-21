@@ -1,4 +1,4 @@
-<?php $APP_SERVER_BASE_URL = "http://web.njit.edu/~jdl38/application_server/app.php"; ?>
+<?php $APP_SERVER_BASE_URL = "http://localhost:3000/app.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

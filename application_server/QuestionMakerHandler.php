@@ -1,44 +1,64 @@
 <?php
 
-require('post_helper.php');
-
 class QuestionMakerHandler{
+
+	function __construct(){
+		ToroHook::add("before_handler", function() { 
+			if(isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true){
+				//Do Nothing
+			}else{
+				http_response_code(401);
+
+				$response = array(
+					"status" => "error",
+					"message" => "no session found"
+				);
+
+				die(json_encode($response));
+			}
+
+		});
+	}
 
 	public function post() {
 		/*
 			Do Some Security Nonsense Later
 		*/
-		$title 		= $_POST['title'];
-		$body 		= $_POST['body'];
-		$language 	= $_POST['language'];
-		$subject  	= $_POST['subject'];
-		$qtype 		= $_POST['qtype'];
-		$answers 	= $_POST['answers'];
 
-		$success = $this -> send_question_data($title, $body, $language, $subject, $qtype, $answers);
+		$data = file_get_contents("php://input");
+		$data =strip_tags($data);
+
+		$success = $this -> send_question_data($data);
 
 		if ($success){
-			echo "{\"message\":\"success\"}";
+		
+				http_response_code(200);
+
+				$response = array(
+					"status" => "success",
+					"message" => "question creation succeeded"
+				);
+
+				die(json_encode($response));
 		}else{
-			echo "{\"message\":\"failure\"}";
+			http_response_code(400);
+
+				$response = array(
+					"status" => "error",
+					"message" => "question creation failed"
+				);
+
+				die(json_encode($response));
 		}
 	}
 
 
-	private function send_question_data($title, $body, $language, $subject, $qtype, $answers) {
+	private function send_question_data($data) {
 		$url = "http://web.njit.edu/~arm32/data_server/app.php/question";
-
-		$data = array(
-			"title" => $title,
-			"spec" => $body,
-			"subject" => $subject,
-			"qtype" => $qtype,
-			"answers" => $answers
-		);
 		
-		$code = null;
+		$code = 0;
 
-		Post($url, &$code, $data);
+		MyPost($url, $code, $data);
 
 		return $code === "201";
 	}
