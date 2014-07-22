@@ -1,6 +1,6 @@
 <?php
 
-class QuestionCreateHandler {
+class QuestionHandler {
 
 
     public function post() {

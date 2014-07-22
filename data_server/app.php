@@ -13,9 +13,9 @@ Toro::serve(array(
     "/user/auth"                => "AuthHandler",
     "/user/register"            => "RegistrationHandler",
     "/user/exist"               => "ExistHandler",
-    "/question"                 => "QuestionCreateHandler",
-    "/question/:number"         => "QuestionGetHandler",
-    "/question/author/:alpha"   => "MultipleQuestionGetHandler",
+    "/question/subject/:alpha"  => "QuestionGetHandler",
+    "/question/language/:alpha" => "QuestionGetHandler",
+    "/question/:number"         => "QuestionCreateHandler"
     "/exam/:number"             => "ExamHandler"
 ));
 
