@@ -4,6 +4,7 @@ require('../lib/Toro.php');
 require('ExistHandler.php');
 require('AuthHandler.php');
 require('RegistrationHandler.php');
+require('QuestionCreateHandler.php');
 require('../lib/hash.php');
 require('sql_helper.php');
 
@@ -15,6 +16,7 @@ Toro::serve(array(
     "/question"                 => "QuestionCreateHandler",
     "/question/:number"         => "QuestionGetHandler",
     "/question/author/:alpha"   => "MultipleQuestionGetHandler",
+    "/exam/:number"             => "ExamHandler"
 ));
 
 ?>

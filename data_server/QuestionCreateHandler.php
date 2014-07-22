@@ -13,8 +13,6 @@ class QuestionCreateHandler {
     }
 
     public function post() {
-        header("Content-type: application/json");
-
         
         $data = file_get_contents("php://input");
         $data = json_decode($data,true);
