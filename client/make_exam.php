@@ -27,6 +27,8 @@
       margin-right: 10px;
     }   
     </style>
+
+    <?php include 'nav-bar.php';?>
     <div class="container" >
         <!-- SELECT BOX REPLACEMENT -->
         <div class="row">
