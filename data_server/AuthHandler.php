@@ -1,22 +1,33 @@
 <?php
 class AuthHandler {
     public function post() {
+
+        $data = file_get_content("php://input");
+        $data = json_decode($data, true);
+
+        $username = $data['username'];
+        $password = $data['password'];
+
+        $rounds = 5;
+        $bcrypt = new Bcrypt($rounds);
+
+        $hash = $bcrypt->hash($password);
+
+
+        $reponse = array();
+
         try {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
+            $conn = MySQL::getInstance();
+            $conn->beginTransaction();
 
-            $rounds = 5;
-            $bcrypt = new Bcrypt($rounds);
-
-            $hash = $bcrypt->hash($password);
-
-
-            $query = MySQL::getInstance()
+            $query = $conn
                 ->prepare("SELECT * FROM codequizuser WHERE username = :username ;");
 
             $query->bindValue(':username', $username, PDO::PARAM_STR);
 
             $query->execute();
+
+            $conn->commit();
             
             $user = $query->fetch(PDO::FETCH_ASSOC);
 
