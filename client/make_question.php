@@ -102,7 +102,7 @@ button .out {
             if (answers.length > 0) {
                 $.ajax({
                     type: 'POST',
-                    url: '/test.php',
+                    url: 'http://localhost:4000/app.php/question',
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
                     data: JSON.stringify(request),
