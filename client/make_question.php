@@ -58,7 +58,7 @@ button .out {
                     <ul class="dropdown-menu">
 						<li><a href="#" id="action-1" value="multi">Multiple Choice</a></li>
 						<li><a href="#" id="action-2" value="true-false">True/False</a></li>
-						<li><a href="#" id="action-3" value="open">Open Ended Question</a></li>
+						<li><a href="#" id="action-3" value="fill">Fill In the Blank</a></li>
 						<li><a href="#" id="action-4" value="coding">Coding Question</a></li>
 					</ul>
 				</div>
@@ -99,20 +99,23 @@ button .out {
             request['qtype'] = qtype.val();
             request['answers'] = answers;
 
-
-            $.ajax({
-                type: 'POST',
-                url: '/test.php',
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                data: JSON.stringify(request),
-                success: function(data,stat,xhr) {
-                    $('#flash').html(data['message']);
-                },
-                error: function(xhr,stat,err) {
-                    console.log("err", err);
-                },
-            });
+            if (answers.length > 0) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/test.php',
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    data: JSON.stringify(request),
+                    success: function(data,stat,xhr) {
+                        $('#flash').html(data['message']);
+                    },
+                    error: function(xhr,stat,err) {
+                        console.log("err", err);
+                    },
+                });
+            }else {
+                console.warn("Please include the answer(s)");
+            }
     }
 
     function register_multi_hooks() {
@@ -173,22 +176,39 @@ button .out {
     }
 
 
-    function register_open_hooks() {
+    function register_fill_hooks() {
+        var match_fill = /[|](.*?)[|]/;   // grab the fill word
+        console.log(match_fill);
+
         $('form').submit(function(e) {
             e.preventDefault();
 
             var acc = [];    // collect answers
             var obj = {};
 
+            var txt = $("form textarea[name='question_body']");
+            console.log(txt);
+            var m = txt.val().match(match_fill);
+            console.log(m);
+            if (m) { 
+                txt.val( txt.val().replace(match_fill,"____") ); 
+            }
+
             $("#mult input:not([type='hidden'])").each(function(iter) {
 
-                obj = {
-                    'answer_key' : iter,
-                    'answer_value' : this.value,
-                    'correct': true
-                };
-                
-                acc.push(obj);
+                if (m && m.length === 2) {
+
+                    obj = {
+                        'answer_key' : iter,
+                        'answer_value' : this.value,     // the  second match, which is the word inside |...|
+                        'correct': true
+                    };
+
+                    acc.push(obj);
+
+                }else {
+                    alert("Please include a |answer| formatted sentence");
+                }
             });
 
             send_data(acc);   // sending off common form info
@@ -272,9 +292,9 @@ button .out {
         // open-ended
 		jQuery("#action-3").click(function(e){
 			$("#mult").html("");
-			$("#mult").append('<div class="form-group"><input type="text" name="open_answer" class="form-control flat" placeholder="Enter Correct Answer Here" required autofocus></div>');
-            $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='open'>");
-            register_open_hooks();
+			$("#mult").append('<div class="form-group"><input type="text" name="fill_answer" class="form-control flat" placeholder="Enter Correct Answer Here" required autofocus></div>');
+            $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='fill'>");
+            register_fill_hooks();
 		});
 
         // coding question
