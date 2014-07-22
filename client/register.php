@@ -1,6 +1,7 @@
 <?php include 'header.php';?>
 
   <body id="login_register">
+    <?php include 'nav-bar.php';?>
     <div class="container">
         <form class="form-signin" role="form" name="login" method="post" >
             <h3 align="center" >Fill Out This Form</h3>
@@ -30,12 +31,6 @@
           <button class="btn btn-embossed btn-primary btn-block" type="submit">Register</button>
           <div id="flash" style="color: white;"></div>
         </form>
-
-    <div class="row" style="position:absolute; bottom: 20px; width: 80%;">
-        <div class="col-md-4">
-          <a class="btn btn-hg btn-primary" href="index.php">Sign In Here!</a>
-        </div>
-    </div>
 
 </div> <!-- /container -->
 

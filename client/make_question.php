@@ -13,7 +13,7 @@ button .out {
     width: 60px;
 }
 </style>
-
+    <?php include 'nav-bar.php';?>
     <div class="container">
 
         <form class="question-form" role="form" name="question_maker" method="post" >

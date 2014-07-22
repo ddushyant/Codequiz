@@ -1,221 +1,206 @@
 <?php include('header.php'); ?>
 <!-- add question weights -->
 <body>
-    <style>
 
-    .static,.viewport
-    {
-        vertical-align:top;
-    }
-
-    body{
-        line-height:1;
-    }            
-
-    hr {
-        border: 0;
-        border-bottom: 2px solid #ccc;
-        background: #999;
-    }
-
-    ol li .question { 
-      display: inline-block;
-      width: 200px; 
-      text-overflow: ellipsis; /* will make [...] at the end */
-      white-space: nowrap; /* paragraph to one line */
-      overflow:hidden; /* older browsers */
-      margin-right: 10px;
-    }   
-    </style>
+    <?php include 'nav-bar.php';?>
     <div class="container" >
         <!-- SELECT BOX REPLACEMENT -->
         <div class="row">
-            <input id="exam-title" type="text" placeholder="Exam Title">
-            <br>
-            <br>
-            <br>
-        </div>
-        <div class="row">
-        <div class="col-xs-3">
-            <select style="display: none;" name="herolist" value="X-Men" class="select-block">
-                <option value="0">Choose hero</option>
-                <option value="1">Spider Man</option>
-                <option value="2">Wolverine</option>
-                <option value="3">Captain America</option>
-                <option value="X-Men" selected="selected">X-Men</option>
-                <option value="Crocodile">Crocodile</option>
-            </select>
-            <div class="btn-group select select-block">
-            <button class="btn dropdown-toggle clearfix btn-primary" data-toggle="dropdown">
-                <span class="filter-option pull-left">X-Men</span>&nbsp;
-                <span class="caret"></span>
-            </button>
-            <span class="dropdown-arrow dropdown-arrow-inverse"></span>
-            <ul style="overflow-y: auto; min-height: 108px; max-height: 97px;" class="dropdown-menu dropdown-inverse" role="menu">
-                <li rel="0"><a tabindex="-1" href="#" class=""><span class="pull-left">Choose hero</span></a>
-                </li>
-                <li rel="1"><a tabindex="-1" href="#" class=""><span class="pull-left">Spider Man</span></a>
-                </li>
-                <li rel="2"><a tabindex="-1" href="#" class=""><span class="pull-left">Wolverine</span></a>
-                </li>
-                <li rel="3"><a tabindex="-1" href="#" class=""><span class="pull-left">Captain America</span></a>
-                </li>
-                <li class="selected" rel="4"><a tabindex="-1" href="#" class=""><span class="pull-left">X-Men</span></a>
-                </li>
-                <li rel="5"><a tabindex="-1" href="#" class=""><span class="pull-left">Crocodile</span></a>
-                </li>
-            </ul>
-        </div>
-    </div>
-        <div class="col-xs-3">
-            <select style="display: none;" name="herolist" value="X-Men" class="select-block">
-                <option value="0">Choose hero</option>
-                <option value="1">Spider Man</option>
-                <option value="2">Wolverine</option>
-                <option value="3">Captain America</option>
-                <option value="X-Men" selected="selected">X-Men</option>
-                <option value="Crocodile">Crocodile</option>
-            </select>
-            <div class="btn-group select select-block">
-            <button class="btn dropdown-toggle clearfix btn-primary" data-toggle="dropdown">
-                <span class="filter-option pull-left">X-Men</span>&nbsp;
-                <span class="caret"></span>
-            </button>
-            <span class="dropdown-arrow dropdown-arrow-inverse"></span>
-            <ul style="overflow-y: auto; min-height: 108px; max-height: 97px;" class="dropdown-menu dropdown-inverse" role="menu">
-                <li rel="0"><a tabindex="-1" href="#" class=""><span class="pull-left">Choose hero</span></a>
-                </li>
-                <li rel="1"><a tabindex="-1" href="#" class=""><span class="pull-left">Spider Man</span></a>
-                </li>
-                <li rel="2"><a tabindex="-1" href="#" class=""><span class="pull-left">Wolverine</span></a>
-                </li>
-                <li rel="3"><a tabindex="-1" href="#" class=""><span class="pull-left">Captain America</span></a>
-                </li>
-                <li class="selected" rel="4"><a tabindex="-1" href="#" class=""><span class="pull-left">X-Men</span></a>
-                </li>
-                <li rel="5"><a tabindex="-1" href="#" class=""><span class="pull-left">Crocodile</span></a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    </div>
-    <div class="row">
-    <!-- END SELECT BOX REPLACEMENT -->
-    <div class="col-3">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Title</th>
-                    <th>Spec</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="table-data-elem"><button style="btn">Add</button></td>
-                    <td class="table-data-elem">Question Title</td>
-                    <td class="table-data-elem">Question Spec</td>
-                </tr>
-                <tr>
-                    <td class="table-data-elem"><button style="btn">Add</button></td>
-                </tr>
-                <tr>
-                    <td class="table-data-elem"><button style="btn">Add</button></td>
-                </tr>
-                <tr>
-                    <td class="table-data-elem"><button style="btn">Add</button></td>
-                </tr>
-                <tr>
-                    <td class="table-data-elem"><button style="btn">Add</button></td>
-                </tr>
-                <tr>
-                    <td class="table-data-elem"><button style="btn">Add</button></td>
-                </tr>
-                <tr>
-                    <td class="table-data-elem"><button style="btn">Add</button></td>
-                </tr>
-                <tr>
-                    <td class="table-data-elem"><button style="btn">Add</button></td>
-                </tr>
-                <tr>
-                    <td class="table-data-elem"><button style="btn">Add</button></td>
-                </tr>
-                <tr>
-                    <td class="table-data-elem"><button style="btn">Add</button></td>
-                </tr>
-            </tbody>
-        </table>
-        <ul class="pager">
-          <li class="previous"><a href="#">&larr; Prev</a></li>
-          <li class="next"><a href="#">Next &rarr;</a></li>
-      </ul>
-        </div>
+            <form role="form" name="exam_maker" method="post" >
+                <div class="col-xs-10">
+                    <div class="btn-group form-group">
+                        <input type="text" id="exam-title" name="exam-body_title" class="form-control flat" placeholder="Enter Exam Title Here">
+                    </div>  
+                    <div class="btn-group form-group">
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span id="lang">Select Language Type</span><span class="caret"></span></button>
+                            <span class="dropdown-arrow"></span>
+                            <ul id="sub" name="subject" class="dropdown-menu">
+                                <li><a href="#">Javascript</a></li>
+                                <li><a href="#">Python</a></li>
+                                <li><a href="#">Java</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="btn-group form-group">
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span id="subject">Select Subject Type</span><span class="caret"></span></button>
+                            <span class="dropdown-arrow"></span>
 
-        <div id="exam-body" class="">
-            <form>
-            <h5 id="exam-title-receive"></h5>
-            <ol>
-            <li><span class="question">Question 1 aslkfjasdklfjaskljflsdkfjlasdkfjlksdjfaklfjl;asdkjl;askjfl;kasjfl;kasjfl;kajsl;fkjsdl;kfasl;kfj;alksfl;kasf</span><span><input type="number" min="1" max="100" value="10"></span></li>
-            <li><span class="question">Question 2</span><input type="number" min="1" max="100" value="10"></li>
-            <li><span class="question">Question 3</span><input type="number" min="1" max="100" value="10"></li>
-            <li><span class="question">Question 4</span><input type="number" min="1" max="100" value="10"></li>
-            <li><span class="question">Question 5</span><input type="number" min="1" max="100" value="10"></li>
-            </ol>
-            <hr>
-            <div class="row">
-                <div class="col-xs-3">
-                    <span id="total-receiver"></span>
+                            <ul id="sub" name="subject" class="dropdown-menu">
+                                <li><a href="#">Variables</a></li>
+                                <li><a href="#">Syntax</a></li>
+                                <li><a href="#">Classes</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br><br>
                 </div>
-            </div>
             </form>
         </div>
+        <div class="row">
+            <!-- END SELECT BOX REPLACEMENT -->
+            <div class="col-8">
+                <table class="qtable">
+                    <thead>
+                        <tr>
+                            <th>Add</th>
+                            <th>Title</th>
+                            <th>Spec</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="table-data-elem remove-button"><button class="btn">Add</button></td>
+                            <td class="table-data-elem">Question Title</td>
+                            <td class="table-data-elem">Question Spec</td>
+                        </tr>
+                        <tr>
+                            <td class="table-data-elem remove-button"><button class="btn">Add</button></td>
+                            <td class="table-data-elem">Question Title</td>
+                            <td class="table-data-elem">Question Spec</td>
+                        </tr>
+                        <tr>
+                            <td class="table-data-ele remove-button v"><button class="btn">Add</button></td>
+                            <td class="table-data-elem">Question Title</td>
+                            <td class="table-data-elem">Question Spec</td>
+                        </tr>
+                        <tr>
+                            <td class="table-data-elem"><button class="btn">Add</button></td>
+                            <td class="table-data-elem">Question Title</td>
+                            <td class="table-data-elem">Question Spec</td>
+                        </tr>
+                        <tr>
+                            <td class="table-data-elem"><button class="btn">Add</button></td>
+                            <td class="table-data-elem">Question Title</td>
+                            <td class="table-data-elem">Question Spec</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ul class="pager">
+                  <li class="previous"><a href="#">&larr; Prev</a></li>
+                  <li class="next"><a href="#">Next &rarr;</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div id="exam-body">
+                <div class="row">
+                <div class="col-xs-3">
+                    <h4 id="exam-title-receive"></h4>
+                </div>
+                <div class="col-xs-3 col-right" >
+                    <p id="total-receiver"></p>
+                </div>
+            </div>
+                <form>
+                    <ul class="sortable list">
+                        <li><button class="btn btn-danger">Remove</button><span class="question">Question 1</span>&nbsp;<input type="number" min="1" max="100" value="10">
+                        <li><button class="btn btn-danger">Remove</button><span class="question">Question 2</span>&nbsp;<input type="number" min="1" max="100" value="10">
+                        <li><button class="btn btn-danger">Remove</button><span class="question">Question 3</span>&nbsp;<input type="number" min="1" max="100" value="10">
+                        <li><button class="btn btn-danger">Remove</button><span class="question">Question 4</span>&nbsp;<input type="number" min="1" max="100" value="10">
+                        <li><button class="btn btn-danger">Remove</button><span class="question">Question 5</span>&nbsp;<input type="number" min="1" max="100" value="10">
+                    </ul>
+                    <hr class="exam-line">
+                </form>
+            </div>
         </div> 
-       </div> 
     </div> <!-- /container -->
 
 
-    <script type="text/javascript" src="js/amalgation.min.js"></script>
-    <script type="text/javascript">
+<script type="text/javascript" src="js/amalgation.min.js"></script>
+<script type="text/javascript">
 
-    var cur_total = 0;
-    var total_receiver = $('#total-receiver');
-    
-     $("input[type='number']").each(function() {      
-        console.log($(this).val());
+var cur_total = 0;
+var total_receiver = $('#total-receiver');
+
+$("input[type='number']").each(function() {      
+    console.log($(this).val());
+    cur_total = parseInt($(this).attr('value')) + cur_total;
+});
+total_receiver.text("Total: " + cur_total.toString());
+
+var exam_title_receiver = $('#exam-title-receive');
+$('#exam-title').on('input', function(e) {
+    console.log("THERE WASD A CHANGE");
+    exam_title_receiver.text($(this).val());
+});
+
+$("input[type='number']").on('input', function(e) {
+    cur_total = 0;
+    $("input[type='number']").each(function() {      
         cur_total = parseInt($(this).attr('value')) + cur_total;
-     });
+    });
     total_receiver.text("Total: " + cur_total.toString());
+});
 
-    var exam_title_receiver = $('#exam-title-receive');
-    $('#exam-title').on('input', function(e) {
-        console.log("THERE WASD A CHANGE");
-        exam_title_receiver.text($(this).val());
+$('form').submit(function(e) {
+    e.preventDefault();
+    $.ajax({
+        type: "POST",
+        url: "<?php echo $APP_SERVER_BASE_URL; ?>/auth",
+        data: $('form').serialize(),
+        success: function(data,stat,xhr) {
+            console.log("Success: ",data);
+            $('#flash').html(data['message']);
+        },
+        error: function(xhr,stat,err) {
+            console.log("Fail: ", err);
+        },
+        dataType: "json"
     });
+});
 
-    $("input[type='number']").on('input', function(e) {
-        cur_total = 0;
-         $("input[type='number']").each(function() {      
-            cur_total = parseInt($(this).attr('value')) + cur_total;
-         });
-        total_receiver.text("Total: " + cur_total.toString());
-    });
+$(".dropdown-menu li a").click(function(){
 
-    $('form').submit(function(e) {
-        e.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: "<?php echo $APP_SERVER_BASE_URL; ?>/auth",
-            data: $('form').serialize(),
-            success: function(data,stat,xhr) {
-                console.log("Success: ",data);
-                $('#flash').html(data['message']);
-            },
-            error: function(xhr,stat,err) {
-                console.log("Fail: ", err);
-            },
-            dataType: "json"
-        });
-    });
-    </script>
+    $(this).parents(".btn-group").find('#lang').text($(this).text());
+    $(this).parents(".btn-group").find('#lang').val($(this).text());
+    $(this).parents(".btn-group").find('#select').text($(this).text());
+    $(this).parents(".btn-group").find('#select').val($(this).text());
+    $(this).parents(".btn-group").find('#subject').text($(this).text());
+    $(this).parents(".btn-group").find('#subject').val($(this).text());
+
+});
+
+// multiple choice
+jQuery("#action-1").click(function(e){
+    $("#mult").html("");
+    $("#mult").append('<div class="form-group"><input type="text" name="mult_answer" class="form-control flat" placeholder="Enter Correct Answer Here" required autofocus></div>');
+    $("#mult").append('<div class="form-group"><input type="text" name="opt1" class="form-control flat" placeholder="Option 1" required></div>');
+    $("#mult").append('<div class="form-group"><input type="text" name="opt2" class="form-control flat" placeholder="Option 2" required autofocus></div>');
+    $("#mult").append('<div class="form-group"><input type="text" name="opt3" class="form-control flat" placeholder="Option 3" required></div>'); 
+    $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='multi'>");
+    register_multi_hooks();
+});
+
+// true false
+jQuery("#action-2").click(function(e){
+    $("#mult").html("");
+    $("#mult").append('<label class="radio checked"><span class="icons"><span class="first-icon fui-radio-unchecked"></span><span class="second-icon fui-radio-checked"></span></span><input type="radio" name="group1" value="True" data-toggle="radio" checked>Answer is True</label>');
+    $("#mult").append('<label class="radio"><span class="icons"><span class="first-icon fui-radio-unchecked"></span><span class="second-icon fui-radio-checked"></span></span><input type="radio" name="group1" value="False" data-toggle="radio">Answer is False</label>');
+    $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='true-false'>");
+    register_truefalse_hooks();
+});
+
+// open-ended
+jQuery("#action-3").click(function(e){
+    $("#mult").html("");
+    $("#mult").append('<div class="form-group"><input type="text" name="open_answer" class="form-control flat" placeholder="Enter Correct Answer Here" required autofocus></div>');
+    $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='open'>");
+    register_open_hooks();
+});
+
+// coding question
+jQuery("#action-4").click(function(e){
+    var html = '<button id="add_btn" class="btn">Add</button><ul id="inoutlist"><li class="inout"><input type="text" class="in" placeholder="Input"><input type="text" class="out" placeholder="Output"></li></ul>';
+    $("#mult").html(html);
+    register_coding_hooks();
+});
+</script>
+
+<script src="js/jquery.sortable.min.js"></script>
+<script>
+    $('.sortable').sortable();
+</script>
 </body>
 </html>

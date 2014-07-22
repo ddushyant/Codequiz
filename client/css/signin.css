@@ -1,7 +1,7 @@
 body{
   padding-top: 40px;
   padding-bottom: 40px;
-  background-color: #eee;
+  background: none repeat scroll 0% 0% #FAFAFC;
 }
 
 #login_register{
@@ -63,4 +63,106 @@ body{
   margin-bottom: 0px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+/* Nav-Bar CSS */
+.nav-bar-placement{
+  margin-top:-40px;
+}
+
+/* Make Exam CSS */
+
+hr .exam-line {
+    border: 0;
+    border-bottom: 2px solid #ccc;
+    background: #999;
+}
+ul li .question { 
+  display: inline-block;
+  width: 200px; 
+  text-overflow: ellipsis; /* will make [...] at the end */
+  white-space: nowrap; /* paragraph to one line */
+  overflow:hidden; /* older browsers */
+  margin-right: 10px;
+  margin-left: 10px;
+}
+.qtable{
+    border-collapse: collapse;
+    width: 100%;
+}
+table.qtable tr:nth-child(2n+1) {
+    background-color: #DCDCDC;
+}
+table.qtable th {
+    color: #FFF;
+    background-color: #2F4154;
+    border: 1px solid #2F4154;
+    padding: 3px;
+    vertical-align: top;
+    text-align: left;
+}
+
+/* Sortable Lists */
+.connected, .sortable, .exclude, .handles {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.sortable.grid {
+  overflow: hidden;
+}
+.connected li, .sortable li, .exclude li, .handles li {
+  list-style: none;
+  border: 1px solid #CCC;
+  background: #DCDCDC;
+  margin: 5px 5px 5px -40px;
+  padding: 5px;
+}
+.handles span {
+  cursor: move;
+}
+li.disabled {
+  opacity: 0.5;
+}
+.sortable.grid li {
+  line-height: 80px;
+  float: left;
+  width: 80px;
+  height: 80px;
+  text-align: center;
+}
+li.highlight {
+  background: #FEE25F;
+}
+#connected {
+  width: 440px;
+  overflow: hidden;
+  margin: auto;
+}
+.connected {
+  float: left;
+  width: 200px;
+}
+.connected.no2 {
+  float: right;
+}
+li.sortable-placeholder {
+  border: 1px dashed #CCC;
+  background: none;
+}
+.col-right{
+  float: right !important;
+}
+#total-receiver {
+  float: right !important;
+  margin-right: 40px;
+}
+
+td, th {
+    padding: 5px;
+}
+td.remove-button{
+  width: 10%;
 }
