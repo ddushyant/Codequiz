@@ -41,7 +41,7 @@ CREATE TABLE question (
     spec            TEXT NOT NULL,
     language        TINYINT UNSIGNED NOT NULL,
     subject         INTEGER UNSIGNED NOT NULL,
-    qtype           ENUM('open','multiple','true-false','fill') NOT NULL,
+    qtype           ENUM('coding','multiple','true-false','fill') NOT NULL,
 
     PRIMARY KEY (id),
     KEY idx_fk_subject (subject),

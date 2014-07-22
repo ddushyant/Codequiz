@@ -94,15 +94,16 @@ button .out {
             var request = {};
 
             request['title'] = $("form input[name='question_title']").val();
-            request['body'] = $("form textarea[name='question_body']").val();
-            request['subject'] = $("form span[id='subject']").text().toLowerCase();
+            request['spec'] = $("form textarea[name='question_body']").val();
+            request['subject'] = $("form span[id='subject']").text();
+            request['language'] = $("form span[id='lang']").text();
             request['qtype'] = qtype.val();
             request['answers'] = answers;
 
             if (answers.length > 0) {
                 $.ajax({
                     type: 'POST',
-                    url: 'http://localhost:4000/app.php/question',
+                    url: 'http://web.njit.edu/~arm32/data_server/app.php/question',
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
                     data: JSON.stringify(request),
@@ -276,7 +277,7 @@ button .out {
 			$("#mult").append('<div class="form-group"><input type="text" name="opt1" class="form-control flat" placeholder="Option 1" required></div>');
 			$("#mult").append('<div class="form-group"><input type="text" name="opt2" class="form-control flat" placeholder="Option 2" required autofocus></div>');
 			$("#mult").append('<div class="form-group"><input type="text" name="opt3" class="form-control flat" placeholder="Option 3" required></div>'); 
-            $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='multi'>");
+            $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='multiple'>");
             register_multi_hooks();
 		});
 
@@ -299,8 +300,9 @@ button .out {
 
         // coding question
 		jQuery("#action-4").click(function(e){
-            var html = '<button id="add_btn" class="btn">Add</button><ul id="inoutlist"><li class="inout"><input type="text" class="in" placeholder="Input"><input type="text" class="out" placeholder="Output"></li></ul>';
+      var html = '<button id="add_btn" class="btn">Add</button><ul id="inoutlist"><li class="inout"><input type="text" class="in" placeholder="Input"><input type="text" class="out" placeholder="Output"></li></ul>';
 			$("#mult").html(html);
+      $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='coding'>");
             register_coding_hooks();
 		});
 	</script>
