@@ -11,13 +11,14 @@ CREATE TABLE codequizuser (
     username        VARCHAR(100) NOT NULL DEFAULT "",
     account_type    ENUM('student','instructor') NOT NULL DEFAULT 'student',
     password        BINARY(60) NOT NULL,
+
     PRIMARY KEY (id),
     UNIQUE KEY `unique_username` (username)
 );
 
 
 CREATE TABLE language (
-    id      INTEGER UNSIGNED NOT NULL AUTO_INCREMENT, 
+    id      TINYINT UNSIGNED NOT NULL AUTO_INCREMENT, 
     name    VARCHAR(100) NOT NULL,
 
     PRIMARY KEY (id)
@@ -26,15 +27,9 @@ CREATE TABLE language (
 
 CREATE TABLE subject (
     id          INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-    title       VARCHAR(100) NOT NULL,
-    language    INTEGER UNSIGNED NOT NULL, 
+    name        VARCHAR(100) NOT NULL,
 
-    PRIMARY KEY (id),
-    KEY idx_fk_language (language),
-
-    CONSTRAINT  `fk_language` FOREIGN KEY (language) REFERENCES language(id)
-        ON DELETE CASCADE 
-        ON UPDATE CASCADE
+    PRIMARY KEY (id)
 );
 
 
@@ -44,13 +39,19 @@ CREATE TABLE question (
     id              INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     title           VARCHAR(1000) NOT NULL,
     spec            TEXT NOT NULL,
+    language        TINYINT UNSIGNED NOT NULL,
     subject         INTEGER UNSIGNED NOT NULL,
-    qtype           ENUM('open','multiple','true-false','coding') NOT NULL,
+    qtype           ENUM('open','multiple','true-false','fill') NOT NULL,
 
     PRIMARY KEY (id),
     KEY idx_fk_subject (subject),
+    KEY idx_fk_language (language),
 
     CONSTRAINT      `fk_subject` FOREIGN KEY (subject) REFERENCES subject(id) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE,
+
+    CONSTRAINT      `fk_language` FOREIGN KEY (language) REFERENCES language(id) 
         ON DELETE CASCADE 
         ON UPDATE CASCADE
 );
@@ -65,7 +66,7 @@ CREATE TABLE answer (
     id              INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     correct         BOOLEAN NOT NULL DEFAULT FALSE,
     question        INTEGER UNSIGNED NOT NULL,
-    answer_key      VARCHAR(128) NOT NULL,
+    answer_key      TEXT NOT NULL,
     answer_value    TEXT NOT NULL,
 
     PRIMARY KEY (id),
@@ -79,20 +80,33 @@ CREATE TABLE answer (
 
 CREATE TABLE exam (
    id                      INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-   exam_title              VARCHAR(200) NOT NULL,
-   exam_date               DATETIME NOT NULL,
-   duration_minutes        INTEGER NOT NULL DEFAULT 30,
+   title                   VARCHAR(200) NOT NULL,
+   instructor               INTEGER UNSIGNED NOT NULL,
 
-   PRIMARY KEY (id)
+   PRIMARY KEY (id),
+   KEY idx_fk_instructor (instructor),
+
+   CONSTRAINT `fk_instructor` FOREIGN KEY (instructor) REFERENCES codequizuser(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 
 );
 
 
 -- relationship table for question <-> exam
 CREATE TABLE examquestion (
-    question        INTEGER UNSIGNED NOT NULL,
     exam            INTEGER UNSIGNED NOT NULL,
+    question        INTEGER UNSIGNED NOT NULL,
+    weight          INTEGER UNSIGNED NOT NULL,
 
-    PRIMARY KEY     (question,exam)
+    PRIMARY KEY     (exam,question),
+
+    CONSTRAINT `fk_exam` FOREIGN KEY (exam) REFERENCES exam(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT `fk_question_examquestion` FOREIGN KEY (question) REFERENCES question(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 
 );
