@@ -1,20 +1,9 @@
 <?php
 
-class QuestionCreateHandler {
+class QuestionHandler {
 
-    private function translate_answer_key($k) {
-        switch($k) {
-            case '0': return 'A';
-            case '1': return 'B';
-            case '2': return 'C';
-            case '3': return 'D';
-            default:  return 'A';
-        }
-    }
 
     public function post() {
-        header("Content-type: application/json");
-
         
         $data = file_get_contents("php://input");
         $data = json_decode($data,true);
@@ -22,6 +11,7 @@ class QuestionCreateHandler {
 
         $title    = $data['title'];
         $spec     = $data['spec'];  
+        $language = $data['language'];
         $subject  = $data['subject'];
         $qtype    = $data['qtype'];
 
@@ -43,13 +33,14 @@ class QuestionCreateHandler {
 
             $query = $conn
                 ->prepare(
-                    "INSERT INTO question (title, spec, subject, qtype)
-                     VALUES(:title,:spec,:subject,:qtype);
+                    "INSERT INTO question (title, spec, subject, language, qtype)
+                     VALUES(:title,:spec,(SELECT id FROM subject WHERE name=:subject),(SELECT id FROM language WHERE name=:language),:qtype);
                     "
                 );
-            $query->bindValue(':title',   $spec, PDO::PARAM_STR);
+            $query->bindValue(':title',   $title, PDO::PARAM_STR);
             $query->bindValue(':spec',    $spec, PDO::PARAM_STR);
-            $query->bindValue(':subject', $subject, PDO::PARAM_INT);
+            $query->bindValue(':language', $language, PDO::PARAM_STR);
+            $query->bindValue(':subject', $subject, PDO::PARAM_STR);
             $query->bindValue(':qtype',   $qtype, PDO::PARAM_STR);
 
             /* BEGIN question create transaction */
@@ -70,7 +61,6 @@ class QuestionCreateHandler {
 
             foreach ($answers as $a) {
 
-                $a['answer_key'] = $this->translate_answer_key($a['answer_key']);
 
                 $query2_text .= '(';
                 $params[] = $question_id;

@@ -1,0 +1,22 @@
+INSERT INTO language (name) VALUES  ('Javascript'),
+                             ('Haskell'),
+                             ('Python'),
+                             ('Java'),
+                             ('C++'),
+                             ('Fortran');
+
+INSERT INTO subject (name) VALUES  ('Strings'),
+                            ('Arrays'),
+                            ('Vectors'),
+                            ('Integers'),
+                            ('Reals'),
+                            ('Functors'),
+                            ('Monads'),
+                            ('Monoids'),
+                            ('Objects'),
+                            ('Functions'),
+                            ('Control Logic'),
+                            ('Loops'),
+                            ('If Else'),
+                            ('Languages'),
+                            ('General');
