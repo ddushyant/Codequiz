@@ -90,7 +90,7 @@ ul li .question {
     width: 100%;
 }
 table.qtable tr:nth-child(2n+1) {
-    background-color: #DCDCDC;
+    background-color: rgba(54, 25, 25, 0.5);
 }
 table.qtable th {
     color: #FFF;
