@@ -2,7 +2,7 @@
 class RegistrationHandler {
   public function post() {
 
-        $data = file_get_content("php://input");
+        $data = file_get_contents("php://input");
         $data = json_decode($data, true);
 
         $username = $data['username'];
