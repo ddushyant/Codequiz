@@ -46,7 +46,7 @@
         console.log($('form').serialize());
         $.ajax({
             type: "POST",
-            url: "<?php echo $APP_SERVER_BASE_URL; ?>/register",
+            url: "http://web.njit.edu/~jdl38/application_server/app.php/register",
             data: $('form').serialize(),
             success: function(data,stat,xhr) {
                 $('#flash').html(data['message']);

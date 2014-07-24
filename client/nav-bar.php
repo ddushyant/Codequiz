@@ -30,7 +30,6 @@
 	if (curPageName() == 'index.php'){ 
 		$first_li_class = 'active';
 		$viz2 = 'none';
-		$viz3 = 'none';
 		$home_url = '/make_exam.php';
 	} else { 
 		$first_li_class = 'none'; 
@@ -38,7 +37,6 @@
 	if (curPageName() == 'register.php'){ 
 		$second_li_class = 'active';
 		$viz2 = 'none';
-		$viz3 = 'none';
 		$home_url = '/make_exam.php';
 	} else { 
 		$second_li_class = 'none'; 
@@ -46,30 +44,14 @@
 	if (curPageName() == 'make_exam.php'){ 
 		$exam_li_class = 'active';
 		$viz1 = 'none';
-		$viz3 = 'none';
 	} else { 
 		$exam_li_class = 'none';
 	}
 	if (curPageName() == 'make_question.php'){ 
 		$question_li_class = 'active';
 		$viz1 = 'none';
-		$viz3 = 'none';
 	} else { 
 		$question_li_class = 'none';
-	}
-	if (curPageName() == 'take_exam.php'){ 
-		$take_li_class = 'active';
-		$viz1 = 'none';
-		$viz2 = 'none';
-	} else { 
-		$take_li_class = 'none';
-	}
-	if (curPageName() == 'results.php'){ 
-		$results_li_class = 'active';
-		$viz1 = 'none';
-		$viz2 = 'none';
-	} else { 
-		$results_li_class = 'none';
 	}
 ?>
 
@@ -88,10 +70,6 @@
 		<ul class="nav navbar-nav" style="display:<?echo $viz2 ?>;">           
 			<li class="<?echo $exam_li_class;?>"><a href="/make_exam.php">Make Exam</a></li>
 			<li class="<?echo $question_li_class;?>"><a href="/make_question.php">Make Question</a></li>
-		</ul>
-		<ul class="nav navbar-nav" style="display:<?echo $viz3 ?>;">           
-			<li class="<?echo $take_li_class;?>"><a href="/take_exam.php">Take Exam</a></li>
-			<li class="<?echo $results_li_class;?>"><a href="/results.php">Results</a></li>
 		</ul>
 		<p class="navbar-text navbar-right">Signed in as <a class="navbar-link" href="#"><?echo $user_name ?></a></p>
 	</div>

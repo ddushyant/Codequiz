@@ -1,5 +1,10 @@
 <?php include('header.php'); ?>
 <!-- add question weights -->
+<style>
+    .qtable {
+        border: solid 2px;
+    }
+</style>
 <body>
 
     <?php include 'nav-bar.php';?>
@@ -34,6 +39,9 @@
                             </ul>
                         </div>
                     </div>
+                    <div class="btn-group form-group">
+                      <button id="save">Save</button>
+                    </div>
                     <br><br>
                 </div>
             </form>
@@ -50,37 +58,38 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="table-data-elem remove-button"><button class="btn">Add</button></td>
-                            <td class="table-data-elem">Question Title</td>
-                            <td class="table-data-elem">Question Spec</td>
+                        <tr id="row1">
+                            <td class="table-data-elem remove-button"><button class="btn add">Add</button></td>
+                            <td class="table-data-elem"></td>
+                            <td class="table-data-elem"></td>
                         </tr>
-                        <tr>
-                            <td class="table-data-elem remove-button"><button class="btn">Add</button></td>
-                            <td class="table-data-elem">Question Title</td>
-                            <td class="table-data-elem">Question Spec</td>
+                        <tr id="row2">
+                            <td class="table-data-elem remove-button"><button class="btn add">Add</button></td>
+                            <td class="table-data-elem"></td>
+                            <td class="table-data-elem"></td>
                         </tr>
-                        <tr>
-                            <td class="table-data-ele remove-button v"><button class="btn">Add</button></td>
-                            <td class="table-data-elem">Question Title</td>
-                            <td class="table-data-elem">Question Spec</td>
+                        <tr id="row3">
+                            <td class="table-data-ele remove-button v"><button class="btn add">Add</button></td>
+                            <td class="table-data-elem"></td>
+                            <td class="table-data-elem"></td>
                         </tr>
-                        <tr>
-                            <td class="table-data-elem"><button class="btn">Add</button></td>
-                            <td class="table-data-elem">Question Title</td>
-                            <td class="table-data-elem">Question Spec</td>
+                        <tr id="row4">
+                            <td class="table-data-elem"><button class="btn add">Add</button></td>
+                            <td class="table-data-elem"></td>
+                            <td class="table-data-elem"></td>
                         </tr>
-                        <tr>
-                            <td class="table-data-elem"><button class="btn">Add</button></td>
-                            <td class="table-data-elem">Question Title</td>
-                            <td class="table-data-elem">Question Spec</td>
+                        <tr id="row5">
+                            <td class="table-data-elem"><button class="btn add">Add</button></td>
+                            <td class="table-data-elem"></td>
+                            <td class="table-data-elem"></td>
                         </tr>
                     </tbody>
                 </table>
-                <ul class="pager">
-                  <li class="previous"><a href="#">&larr; Prev</a></li>
-                  <li class="next"><a href="#">Next &rarr;</a></li>
-                </ul>
+                <br>
+                <div class="btn-group">
+                  <button id="prev" class="btn">&larr; Prev</button>
+                  <button id="next" class="btn">Next &rarr;</button>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -95,11 +104,6 @@
             </div>
                 <form>
                     <ul class="sortable list">
-                        <li><button class="btn btn-danger">Remove</button><span class="question">Question 1</span>&nbsp;<input type="number" min="1" max="100" value="10">
-                        <li><button class="btn btn-danger">Remove</button><span class="question">Question 2</span>&nbsp;<input type="number" min="1" max="100" value="10">
-                        <li><button class="btn btn-danger">Remove</button><span class="question">Question 3</span>&nbsp;<input type="number" min="1" max="100" value="10">
-                        <li><button class="btn btn-danger">Remove</button><span class="question">Question 4</span>&nbsp;<input type="number" min="1" max="100" value="10">
-                        <li><button class="btn btn-danger">Remove</button><span class="question">Question 5</span>&nbsp;<input type="number" min="1" max="100" value="10">
                     </ul>
                     <hr class="exam-line">
                 </form>
@@ -111,18 +115,255 @@
 <script type="text/javascript" src="js/amalgation.min.js"></script>
 <script type="text/javascript">
 
+var Queue;
+
+Queue = (function () {
+    function Queue() {
+        this._size = 0;
+        this._storage = [];
+    }
+
+    Queue.prototype.push = function (elem) {
+        this._size++;
+        return this._storage.push(elem);
+    };
+
+    Queue.prototype.pop = function () {
+        if (this._size > 0) {
+            this._size--;
+            this._storage.shift();
+        }
+        return null;
+    };
+
+    Queue.prototype.front = function () {
+        if (this._size > 0) {
+            return this._storage[0];
+        }
+        return null;
+    }
+
+    Queue.prototype.back = function () {
+        if (this._size > 0) {
+            return this._storage[this._size - 1];
+        }
+        return null;
+    }
+
+    Queue.prototype.empty = function () {
+        return this._size === 0;
+    };
+
+    Queue.prototype.size = function () {
+        return this._size;
+    };
+
+    return Queue;
+
+})();
+
+function populate_from_queue(queue) {
+    var TABLE_ROWS = 5;
+    var q;
+    for(var i = 0; i < TABLE_ROWS; i++) {
+       q = queue.front();
+       queue.pop();
+       row_name = "#row" + (i+1).toString();
+       
+       var td = $(row_name).find("td");
+       if (q) {
+         console.log(q.id);
+         $(td[0]).data("questionid",q.id);
+         $(td[1]).text(q.title);
+         $(td[2]).text(q.spec);
+       }else {
+         break;
+       }
+    }
+}
+
+/*
+    Initial table population
+*/
+
+var questions_queue = new Queue();
+var old_questions_queue = new Queue();
+
+$.ajax({
+    method: "GET",
+    url: "http://web.njit.edu/~jdl38/application_server/app.php/question_data",
+    xhrFields: {
+      withCredentials: true
+    },
+    dataType: "json",
+    success: function(d) {
+        var subjects = d['subjects'];
+        var languages = d['languages'];
+        var questions = d['questions'];
+        for (var i in questions) {
+          questions_queue.push(questions[i]);
+        }
+        populate_from_queue(questions_queue);
+    },
+    error: function(e) {
+        console.log(e);
+    }
+});
+
+
+
+$('#next').click(function(e) {
+  console.log("NEXT",questions_queue.size());
+    var lang = $('#lang').val();
+    var subject = $('#subject').val();
+    var params = {};
+
+    if (lang.length) params['language'] = lang;
+    if (subject.length) params['subject'] = subject;
+
+    if (questions_queue.size() < 10) {
+        //retrieve more 
+        // using filter if set
+        $.ajax({
+            method: "GET",
+            url: "http://web.njit.edu/~jdl38/application_server/app.php/question_data",
+            xhrFields: {
+              withCredentials: true
+            },
+            data: params,
+            dataType: "json",
+            success: function(d) {
+                var questions = d['questions'];
+                questions.forEach(function(e,i,a) {
+                  questions_queue.push(e);
+                });
+                populate_from_queue(questions_queue);
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+    }else{
+      populate_from_queue(questions_queue);
+    }
+    // Populate questions using queue (saves network access time)
+});
+
+var question_set = {};
+
+$('.sortable').on("click",".remove",function(e) {
+    e.preventDefault();
+    var parent = $(this).parent();
+    var qid = parent.data("questionid");
+    console.log("DELETING",qid);
+    console.log(question_set);
+    delete question_set[qid];
+    console.log(question_set);
+    parent.remove();
+});
+
+$('.add').click(function(e) {
+    var li = $('<li>');
+    var btn = $('<button>');
+    var span = $('<span>');
+    var input = $('<input>');
+
+    console.log(question_set);
+
+    btn.addClass("btn");
+    btn.addClass("btn-danger");
+    btn.addClass("remove");
+    btn.text("Remove");
+
+    span.addClass("question");
+
+    var text = $(this).parent().next().text();
+    span.text(text);
+
+    input.attr("min","1");
+    input.attr("max","100");
+    input.attr("value","10");
+    input.attr("type","number");
+
+    li.attr("draggable","true");
+    var parent = $(this).parent();
+    var qid = parent.data("questionid");
+
+    li.data("questionid",qid);
+    console.log(li.data("questionid"));
+    li.append(btn);
+    li.append(span);
+    li.append(input);
+
+    //    $('.sortable').append('<li draggable="true"><button class="btn btn-danger remove">Remove</button><span class="question">Question 1</span>&nbsp;<input min="1" max="100" value="10" type="number"></li>');
+
+    if (qid in question_set) {
+      // do nothing
+    }else {
+      question_set[qid] = true;
+      $('.sortable').append(li);
+    }
+
+
+});
+
+$('#save').click(function(e) {
+
+  e.preventDefault();
+
+  $(this).attr('disabled','disabled');
+  $(this).text("Saved");
+
+  var exam_title = $('#exam-title').val();
+  var acc = [];
+  var qid,weight;
+  var q;
+
+  $('.sortable li').each(function(iter) {
+    qid = $(this).data("questionid");
+    weight = $(this).find("input").val();
+    acc.push({
+      "qid":qid,
+      "weight":weight,
+    });
+  });
+  console.log(acc);
+
+  var request = {};
+
+  request.title = exam_title;
+  request.questions = acc;
+
+  var data = JSON.stringify(request);
+
+  $.ajax({
+      type: "POST",
+      url: "http://web.njit.edu/~jdl38/application_server/app.php/exam",
+      contentType: 'application/json; charset=utf-8',
+      dataType: "json",
+      data: data,
+      success: function(d,s,x) {
+        //$(this).removeAttr('disabled');
+      },
+      error: function(x,s,e) {
+        $(this).removeAttr('disabled');
+        console.log("ERROR");
+      },
+  });
+
+
+});
+
 var cur_total = 0;
 var total_receiver = $('#total-receiver');
 
 $("input[type='number']").each(function() {      
-    console.log($(this).val());
     cur_total = parseInt($(this).attr('value')) + cur_total;
 });
 total_receiver.text("Total: " + cur_total.toString());
 
 var exam_title_receiver = $('#exam-title-receive');
 $('#exam-title').on('input', function(e) {
-    console.log("THERE WASD A CHANGE");
     exam_title_receiver.text($(this).val());
 });
 
@@ -134,68 +375,19 @@ $("input[type='number']").on('input', function(e) {
     total_receiver.text("Total: " + cur_total.toString());
 });
 
-$('form').submit(function(e) {
-    e.preventDefault();
-    $.ajax({
-        type: "POST",
-        url: "<?php echo $APP_SERVER_BASE_URL; ?>/auth",
-        data: $('form').serialize(),
-        success: function(data,stat,xhr) {
-            console.log("Success: ",data);
-            $('#flash').html(data['message']);
-        },
-        error: function(xhr,stat,err) {
-            console.log("Fail: ", err);
-        },
-        dataType: "json"
-    });
-});
 
 $(".dropdown-menu li a").click(function(){
-
-    $(this).parents(".btn-group").find('#lang').text($(this).text());
-    $(this).parents(".btn-group").find('#lang').val($(this).text());
-    $(this).parents(".btn-group").find('#select').text($(this).text());
-    $(this).parents(".btn-group").find('#select').val($(this).text());
-    $(this).parents(".btn-group").find('#subject').text($(this).text());
-    $(this).parents(".btn-group").find('#subject').val($(this).text());
+    var text = $(this).text();
+    $(this).parents(".btn-group").find('#lang').text(text);
+    $(this).parents(".btn-group").find('#lang').val(text);
+    $(this).parents(".btn-group").find('#select').text(text);
+    $(this).parents(".btn-group").find('#select').val(text);
+    $(this).parents(".btn-group").find('#subject').text(text);
+    $(this).parents(".btn-group").find('#subject').val(text);
 
 });
 
-// multiple choice
-jQuery("#action-1").click(function(e){
-    $("#mult").html("");
-    $("#mult").append('<div class="form-group"><input type="text" name="mult_answer" class="form-control flat" placeholder="Enter Correct Answer Here" required autofocus></div>');
-    $("#mult").append('<div class="form-group"><input type="text" name="opt1" class="form-control flat" placeholder="Option 1" required></div>');
-    $("#mult").append('<div class="form-group"><input type="text" name="opt2" class="form-control flat" placeholder="Option 2" required autofocus></div>');
-    $("#mult").append('<div class="form-group"><input type="text" name="opt3" class="form-control flat" placeholder="Option 3" required></div>'); 
-    $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='multi'>");
-    register_multi_hooks();
-});
 
-// true false
-jQuery("#action-2").click(function(e){
-    $("#mult").html("");
-    $("#mult").append('<label class="radio checked"><span class="icons"><span class="first-icon fui-radio-unchecked"></span><span class="second-icon fui-radio-checked"></span></span><input type="radio" name="group1" value="True" data-toggle="radio" checked>Answer is True</label>');
-    $("#mult").append('<label class="radio"><span class="icons"><span class="first-icon fui-radio-unchecked"></span><span class="second-icon fui-radio-checked"></span></span><input type="radio" name="group1" value="False" data-toggle="radio">Answer is False</label>');
-    $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='true-false'>");
-    register_truefalse_hooks();
-});
-
-// open-ended
-jQuery("#action-3").click(function(e){
-    $("#mult").html("");
-    $("#mult").append('<div class="form-group"><input type="text" name="open_answer" class="form-control flat" placeholder="Enter Correct Answer Here" required autofocus></div>');
-    $("#mult").append("<input id='qtype' type='hidden' name='qtype' value='open'>");
-    register_open_hooks();
-});
-
-// coding question
-jQuery("#action-4").click(function(e){
-    var html = '<button id="add_btn" class="btn">Add</button><ul id="inoutlist"><li class="inout"><input type="text" class="in" placeholder="Input"><input type="text" class="out" placeholder="Output"></li></ul>';
-    $("#mult").html(html);
-    register_coding_hooks();
-});
 </script>
 
 <script src="js/jquery.sortable.min.js"></script>

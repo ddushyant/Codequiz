@@ -1,4 +1,5 @@
 <?php include 'header.php';?>
+<?php include 'user_info.php';?>
 
 <body>
 
@@ -70,13 +71,6 @@ button .out {
           <button class="btn btn-embossed btn-primary btn-block" type="submit">Submit Question</button>
           <div id="flash" style="color: white;"></div>
         </form>
-
-    <div class="row" style="position:absolute; bottom: 20px; width: 80%;">
-        <div class="col-md-4">
-          <a class="btn btn-hg btn-primary" href="index.php">Sign In Here!</a>
-        </div>
-    </div>
-
 </div> <!-- /container -->
 
 

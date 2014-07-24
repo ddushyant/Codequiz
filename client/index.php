@@ -37,10 +37,11 @@
         for (var i in formArr) {
             request[formArr[i].name] = formArr[i].value;
         }
+        console.log(request);
 
         $.ajax({
             type: "POST",
-            url: "<?php echo $APP_SERVER_BASE_URL; ?>/auth",
+            url: "http://web.njit.edu/~jdl38/application_server/app.php/auth",
             data: JSON.stringify(request),
             dataType: "json",
 
