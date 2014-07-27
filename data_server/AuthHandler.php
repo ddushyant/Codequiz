@@ -35,8 +35,13 @@ class AuthHandler {
             $db_hashed_password = $user['password'];
 
             if ($n && $bcrypt->verify($password,$db_hashed_password)) {
-                http_response_code(204);
-                die();
+                http_response_code(200);
+                die(json_encode(array(
+                  "status" => "success",
+                  "message" => "authorized",
+                  "user_id" => $user['id'],
+                  "account_type" => $user['account_type'],
+                )));
             }else {
                 http_response_code(401);
                 die();

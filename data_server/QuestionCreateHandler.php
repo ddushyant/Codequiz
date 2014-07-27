@@ -167,7 +167,7 @@ class QuestionCreateHandler {
        http_response_code(201);
 
        $response['status'] = "success";
-       $response['message'] = "";
+       $response['message'] = "Question Created";
 
        die(json_encode($response));
        

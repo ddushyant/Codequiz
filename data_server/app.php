@@ -9,6 +9,7 @@ require('RegistrationHandler.php');
 require('QuestionCreateHandler.php');
 require('SubjectHandler.php');
 require('LanguageHandler.php');
+require('ExamHandler.php');
 
 
 Toro::serve(array(
@@ -21,7 +22,8 @@ Toro::serve(array(
     "/question"                 => "QuestionCreateHandler",
     "/language"                 => "LanguageHandler",
     "/subject"                  => "SubjectHandler",
-    "/exam/:number"             => "ExamHandler"
+    "/exam/:number"             => "ExamHandler",
+    "/exam"                     => "ExamHandler",
 ));
 
 ?>
