@@ -1,5 +1,4 @@
-Header set Access-Control-Allow-Origin "http://web.njit.edu/~arm32 http://localhost:8000"
-Header set Access-Control-Allow-Methods "GET, POST, PUT"
-Header set Access-Control-Allow-Credentials true
+Header set Access-Control-Allow-Origin "http://web.njit.edu/~arm32/ http://localhost:8000 http://web.njit.edu/~arm32"
+Header set Access-Control-Allow-Methods: "GET, POST, PUT"
+Header set Access-Control-Allow-Credentials: "true"
 Header set Content-Type "application/json; charset=utf-8"
-

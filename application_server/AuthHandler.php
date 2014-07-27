@@ -1,72 +1,57 @@
 <?php
 class AuthHandler {
 	public function post() {
-
 		$data = file_get_contents("php://input");
-		$clean_data = strip_tags($data);
-		$data = json_decode($clean_data, true);
-
+		$data = json_decode($data,true);
 		$username = $data['user'];
 		$password = $data['pass'];      
-		$is_external = $data['njit'] === "true";    // boolean to auth against NJIT or CodeQuiz Backend
+		$is_external = isset($data['njit']) && $data['njit'] === "true";    // boolean to auth against NJIT or CodeQuiz Backend
 		$logged_in = false;
 
 		if ($is_external) {
-
 			$username = str_replace("@njit.edu", "", $username);
 			$logged_in = $this -> njit_login($username, $password);
-
 			if ($logged_in) {
-				
-				$_SESSION["logged_in"] = true;
-
-				http_response_code(200);
-
-				$response = array(
-					"status" => "success",
-					"message" => "Logged in using NJIT credentials"
-				);
-
-				die(json_encode($response));
-
+				echo '{"message":"Logged in using NJIT credentials"}';
 			} else {
-
-				http_response_code(401);
-
-				$response = array(
-					"status" => "error",
-					"message" => "NJIT Login Failed"
-				);
-
-				die(json_encode($response));
+				echo '{"message":"NJIT Login Failed"}';
 			}
 		}else {
+			$ch = curl_init();
+			$url = "http://web.njit.edu/~arm32/data_server/app.php/user/auth";
+			$data_string = json_encode(array("username"=>$username,"password"=>$password));
 
-			$logged_in = $this -> backend_login($clean_data);
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+			$result = curl_exec($ch);
+			$code = (string)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+			curl_close($ch);
+
+			$logged_in = $code === "200";
 			if ($logged_in) {
-			
-				$_SESSION["logged_in"] = true;
+				$_SESSION['logged_in'] = true;
+				$data = json_decode($result,true);
+				$_SESSION['account_type'] = $data['account_type'];
+                $_SESSION['user_id'] = $data['user_id'];
+												
+                $response = array(
+                    "message" => "Logged in using CodeQuiz credentials",
+                    "status" => "success",
+                    "account_type" => $data['account_type'],
+                );
 
-				http_response_code(200);
-
-				$response = array(
-					"status" => "success",
-					"message" => "Logged in using CodeQuiz credentials"
-				);
-
-				die(json_encode($response));
+                die(json_encode($response));
 
 			} else {
-				http_response_code(401);
-
-				$response = array(
-					"status" => "error",
-					"message" => "CodeQuiz Login Failed"
-				);
-
-				die(json_encode($response));
+			echo '{"message":"CodeQuiz Login Failed"}';
 			}
 		}
+
+		
+
 	}
 
 	private function njit_login($user, $pass){
@@ -92,13 +77,16 @@ class AuthHandler {
 		return strpos($result, "loginok.html") !== false;
 	}
 
-	private function backend_login($data) {
-		
-
+	private function backend_login($username, $password) {
 		$url = "http://web.njit.edu/~arm32/data_server/app.php/user/auth";
-		$code = 0;
 
-		MyPost($url, $code, $data);
+		$params = array(
+			"username"=>$username,
+			"password"=>$password
+		);
+
+		$code = 0;
+		$result = MyPost($url,$code,$params);
 
 		return $code === "204";
 	}

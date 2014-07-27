@@ -4,48 +4,32 @@ class RegisterHandler{
 	public function post() {
 
 		$success = false;
-
 		$data = file_get_contents("php://input");
-		strip_tags($data);
-		$data = json_decode($data, true);
+		$data = json_decode($data,true);
 
 		$username = $data['user'];
 		$password = $data['pass'];
 		$account_type = isset($data['account_type']) ? $data['account_type'] : 'student';
 
+		$params = array(
+			"username" => $username,
+			"password" => $password,
+			"account_type" => $account_type
+		);
 
-		$success = $this -> send_register_data($username, $password, $account_type);
+        $params = json_encode($params);
+		$code = 0;
+		$url = "http://web.njit.edu/~arm32/data_server/app.php/user/register";
+		$result = MyPost($url,$code,$params);
 
+        $result = json_decode($result,true);
+		$success = $result['status'] === 'success';
 		if ($success){
-			$_SESSION["logged_in"] = true;
-				http_response_code(200);
-
-				$response = array(
-					"status" => "success",
-					"message" => "registration succeeded"
-				);
-
-				die(json_encode($response));
+			echo "{\"message\":\"success\"}";
 		}else{
-			http_response_code(401);
-
-			$response = array(
-				"status" => "error",
-				"message" => "registration failed"
-			);
-
-			die(json_encode($response));
+			echo "{\"message\":\"failure\"}";
 		}
 
-	}
-	private function send_register_data($username, $password, $type) {
-
-		$url = "http://web.njit.edu/~arm32/data_server/app.php/user/register";
-		$code = 0;
-
-		MyPost($url, $code, $data);
-
-		return $code === "201";
 	}
 }
 ?>
