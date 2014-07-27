@@ -1,5 +1,4 @@
 <?php include 'header.php';?>
-<?php include 'user_info.php';?>
 
 <body>
 
@@ -9,7 +8,6 @@ ul {
     margin: 0;
     padding: 0;
 }
-
 button .out {
     width: 60px;
 }
@@ -18,7 +16,7 @@ button .out {
     <div class="container">
 
         <form class="question-form" role="form" name="question_maker" method="post" >
-            <h3 align="center" >Exam Question Form</h3>
+            <h3 align="center" >Question Creation Form</h3>
 
             <div class="form-group">
                 <input type="text" name="question_title" class="form-control flat" placeholder="Enter Question Title...">
@@ -64,13 +62,21 @@ button .out {
 					</ul>
 				</div>
 			</div>
-
+      <div class="row">
+          <p>
+            <label for="currentvalue">Please Select Question Difficulty:</label>
+            <input type="text" id="currentvalue" style="border: 0px none !important; font-weight:bold;">
+          </p>
+      </div>
+      <div class="row">
+        <div id="slider" class="ui-slider"></div>
+      </div>
 			<div id="mult">
 			</div>
 
           <button class="btn btn-embossed btn-primary btn-block" type="submit">Submit Question</button>
-          <div id="flash" style="color: white;"></div>
         </form>
+          <div id="flash" align="center" style="font-weight: bold;"></div>
 </div> <!-- /container -->
 
 
@@ -81,6 +87,20 @@ button .out {
     <script type="text/javascript" src="js/amalgation.min.js"></script>
   
     <script type="text/javascript">
+
+ $(function() {
+   $( "#slider" ).slider({
+     value:3,
+       min: 1,
+       max: 5,
+       step: 1,
+       slide: function( event, ui ) {
+         $( "#currentvalue" ).val( ui.value );
+       }
+   });
+   $( "#currentvalue" ).val($( "#slider" ).slider( "value" ) );
+ });
+
 
     function send_data(answers) {
             var qtype = $('#qtype');
@@ -93,6 +113,7 @@ button .out {
             request['language'] = $("form span[id='lang']").text();
             request['qtype'] = qtype.val();
             request['answers'] = answers;
+            request['difficulty'] = $("form input[id='currentvalue']").val();
 
             if (answers.length > 0) {
                 $.ajax({
@@ -112,6 +133,8 @@ button .out {
                 console.warn("Please include the answer(s)");
             }
     }
+
+
 
     function register_multi_hooks() {
         

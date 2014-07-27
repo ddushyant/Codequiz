@@ -1,5 +1,4 @@
-<?php include 'header.php';?>
-
+<?php include ('header.php');?>
 <body id="login_register">
     <?php include 'nav-bar.php';?>
     <div class="container" >
@@ -48,6 +47,11 @@
             success: function(data,stat,xhr) {
                 console.log("Success: ",data);
                 $('#flash').html(data['message']);
+                if (data['account_type'] == 'student') {
+                  window.location.replace("http://web.njit.edu/~arm32/client/dash_student.php");
+                }else {
+                  window.location.replace("http://web.njit.edu/~arm32/client/dash_instructor.php");
+                }
             },
             error: function(xhr,stat,err) {
                 if (err.status === 401) {

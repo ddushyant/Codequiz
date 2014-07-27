@@ -1,13 +1,7 @@
 <?php include('header.php'); ?>
-<!-- add question weights -->
-<style>
-    .qtable {
-        border: solid 2px;
-    }
-</style>
 <body>
 
-    <?php include 'nav-bar.php';?>
+    <?php include('nav-bar.php');?>
     <div class="container" >
         <!-- SELECT BOX REPLACEMENT -->
         <div class="row">
@@ -18,7 +12,7 @@
                     </div>  
                     <div class="btn-group form-group">
                         <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span id="lang">Select Language Type</span><span class="caret"></span></button>
+                            <button class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span id="lang">Select Language Type</span><span class="caret"></span></button>
                             <span class="dropdown-arrow"></span>
                             <ul id="sub" name="subject" class="dropdown-menu">
                                 <li><a href="#">Javascript</a></li>
@@ -29,7 +23,7 @@
                     </div>
                     <div class="btn-group form-group">
                         <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span id="subject">Select Subject Type</span><span class="caret"></span></button>
+                            <button class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span id="subject">Select Subject Type</span><span class="caret"></span></button>
                             <span class="dropdown-arrow"></span>
 
                             <ul id="sub" name="subject" class="dropdown-menu">
@@ -40,7 +34,7 @@
                         </div>
                     </div>
                     <div class="btn-group form-group">
-                      <button id="save">Save</button>
+                      <button id="save" class="btn btn-embossed btn-primary btn-block" type="submit">Submit</button>
                     </div>
                     <br><br>
                 </div>
