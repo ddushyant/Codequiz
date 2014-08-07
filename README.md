@@ -3,7 +3,7 @@ Codequiz
 
 3 Tier architecture application written for CS 490 - Design in Software Engineering.
 Written by [@zintinio](https://github.com/Zintinio) and [@JohnnyJuicebox](https://github.com/JohnnyJuicebox).
-
+Site is up at: [http://web.njit.edu/~arm32/client/](http://web.njit.edu/~arm32/client/)
 
 Disclaimer!
 ===========
