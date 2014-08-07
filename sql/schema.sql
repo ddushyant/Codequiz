@@ -42,6 +42,8 @@ CREATE TABLE question (
     language        TINYINT UNSIGNED NOT NULL,
     subject         INTEGER UNSIGNED NOT NULL,
     qtype           ENUM('coding','multiple','true-false','fill') NOT NULL,
+    feedback        TEXT NOT NULL,
+    difficulty      TINYINT UNSIGNED NOT NULL,
 
     PRIMARY KEY (id),
     KEY idx_fk_subject (subject),
@@ -109,4 +111,47 @@ CREATE TABLE examquestion (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 
+);
+
+CREATE TABLE examanswer (
+    exam            INTEGER UNSIGNED NOT NULL,
+    question        INTEGER UNSIGNED NOT NULL,
+    student         INTEGER UNSIGNED NOT NULL,
+    taken_at        DATETIME NOT NULL,
+    answer          TEXT NOT NULL,
+    correct_answer  TEXT NOT NULL,
+    correct         BOOLEAN NOT NULL,
+
+    PRIMARY KEY (exam, question, student, taken_at),
+
+    CONSTRAINT `fk_exam_examanswer` FOREIGN KEY (exam) REFERENCES exam(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT `fk_question_examanswer` FOREIGN KEY (question) REFERENCES question(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT `fk_student_examanswer` FOREIGN KEY (student) REFERENCES codequizuser(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE grade(
+    exam            INTEGER UNSIGNED NOT NULL,
+    student         INTEGER UNSIGNED NOT NULL,
+    taken_at        DATETIME NOT NULL,
+    score           INTEGER UNSIGNED NOT NULL,
+    total           INTEGER UNSIGNED NOT NULL,
+    released        BOOLEAN DEFAULT FALSE NOT NULL,
+
+    PRIMARY KEY (exam,student,taken_at),
+
+    CONSTRAINT `fk_exam_grade` FOREIGN KEY (exam) REFERENCES exam(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT `fk_student_grade` FOREIGN KEY (student) REFERENCES codequizuser(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
