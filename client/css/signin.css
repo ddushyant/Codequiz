@@ -4,11 +4,18 @@ body{
   background: none repeat scroll 0% 0% #FAFAFC;
 }
 
+input, button, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  border: 1px solid #2F4154 !important;
+}
+
 #login_register{
   padding-top: 40px;
   padding-bottom: 40px;
-  background-color: #eee;
-  background:url('http://thecatapi.com/api/images/get?format=src&type=gif') no-repeat fixed center; 
+  background-color: #FFF;
+  /*background:url('http://thecatapi.com/api/images/get?format=src&type=gif') no-repeat fixed center; */
   background-size: 100%;
 }
 
@@ -16,23 +23,20 @@ body{
   max-width: 380px;
   padding: 15px;
   margin: 0 auto;
-  background: rgba(54, 25, 25, .5);
+ /* background: rgba(54, 25, 25, .5); */
 }
 
 .question-form {
   max-width: 550px;
   padding: 15px;
   margin: 0 auto;
-  background: rgba(54, 25, 25, .5);
 }
 .question-form h3{
   margin-top: -10px; 
-  color: #1ABC9C;
 }
 
 .form-signin h3{
   margin-top: -10px; 
-  color: #1ABC9C;
 }
 
 .form-signin .form-signin-heading,
@@ -78,7 +82,7 @@ hr .exam-line {
 }
 ul li .question { 
   display: inline-block;
-  width: 200px; 
+  width: 400px; 
   text-overflow: ellipsis; /* will make [...] at the end */
   white-space: nowrap; /* paragraph to one line */
   overflow:hidden; /* older browsers */
@@ -88,9 +92,10 @@ ul li .question {
 .qtable{
     border-collapse: collapse;
     width: 100%;
+    border: solid 2px;
 }
 table.qtable tr:nth-child(2n+1) {
-    background-color: rgba(54, 25, 25, 0.5);
+    background-color: #DCDCDC;
 }
 table.qtable th {
     color: #FFF;
@@ -165,4 +170,12 @@ td, th {
 }
 td.remove-button{
   width: 10%;
+}
+.question_scroll{
+    height: 200px;
+    overflow: scroll;
+}
+td.table-data-elem{
+    padding-top: 5px;   
+    padding-bottom : 5px;
 }

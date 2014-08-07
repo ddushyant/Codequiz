@@ -27,7 +27,7 @@ textarea {
     </div>
 
 	<div id="multiple-question" class="row" style="display:none" data-questiontype="multiple">
-		<div class="col-xs-8">
+		<div class="col-8">
           <label class="radio checked">
             <span class="icons"><span class="first-icon fui-radio-unchecked"></span><span class="second-icon fui-radio-checked"></span></span><input name="optionsRadios1" id="optionsRadios1" value="option1" data-toggle="radio" type="radio">
           </label>
@@ -42,7 +42,6 @@ textarea {
           </label>
         </div>
     </div>
-<br><br><br><br>
     <div id="true-false-question" class="row" style="display:none" data-questiontype="true-false">
     	<div class="col-xs-3">
           <label class="radio checked">
@@ -55,8 +54,17 @@ textarea {
           </label>
         </div>
     </div>
-  <div class="col-xs-6 col-md-4"></div>
-  <div id="question" class="col-xs-6 col-md-4">
+  <div class="col-xs-6 col-md-4">
+    <button id="prev" style="float: right" type="button" class="btn">Prev</button>
+  </div>
+  <div class="col-xs-6 col-md-4">
+<div class="progress">
+  <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    0%
+  </div>
+</div>
+<div id="question">
+</div>
   </div>
   <div class="col-xs-6 col-md-4">
     <button id="next" type="button" class="btn">Next</button>
@@ -163,6 +171,7 @@ textarea {
 
     var question_elem = $('#question');
     var next = $('#next');
+    var prev= $('#prev');
 
     function render_question(question) {
     	var dup;
@@ -172,16 +181,16 @@ textarea {
     			dup = fill_question_miniform.clone();
     			break;
     		case "multiple":
-          dup = multiple_question_miniform.clone();
-          var answers = question.answers;
-          dup.find("label").each(function(i,e) {
-            $(this).append(answers[i].answer_value);
-          });
+                dup = multiple_question_miniform.clone();
+                var answers = question.answers;
+                dup.find("label").each(function(i,e) {
+                    $(this).append("<pre>" + answers[i].answer_value + "</pre>");
+                });
 
-          dup.find("input").each(function(i,e) {
-            if (i === 0) $(this).prop('checked',true);
-            $(this).val(answers[i].answer_value);
-          });
+                dup.find("input").each(function(i,e) {
+                    if (i === 0) $(this).prop('checked',true);
+                    $(this).val(answers[i].answer_value);
+                });
     			break;
     		case "coding":
           dup = coding_question_miniform.clone();
@@ -279,8 +288,9 @@ textarea {
           dataType: "json",
           contentType: "application/json; charset=utf-8",
           success: function(d){
-            console.log(d);
-            alert("You scored: " + d['score'] + " out of: " + d['total']);
+              console.log(d);
+              question_elem.html("<a href='http://web.njit.edu/~arm32/client/dash_student.php'><button>Click to go to Dashboard</button></a>");
+
           },
           error: function(e) {
           },
@@ -288,11 +298,12 @@ textarea {
 
       });
     }
-
+    var TOTAL;
+    var CURRENT_QUESTION = 0;
+    var FRONT_INDEX = 0;
     function setup() {
       var questions = exam_data['questions'];
-      var question_queue = new Queue();
-      var cur_idx = new RangeIterator(0, questions.length - 1, 1);
+      var question_queue = new Array();
       var cur_question;
 
 
@@ -300,20 +311,46 @@ textarea {
         question_queue.push(question);
       });
 
+      TOTAL = question_queue.length;
+
       next.on('click', function(e) {
-          get_answer_data();
-          cur_idx.increment();
-          cur_question = question_queue.front();
-          render_question(cur_question);
-          question_queue.pop();
-          if (question_queue.empty()) {
+
+          FRONT_INDEX++;
+          CURRENT_QUESTION++;
+          var progress_value = (CURRENT_QUESTION/TOTAL * 100);
+          var pbar = $("#progress-bar");
+          pbar.attr("aria-valuenow", progress_value);
+          pbar.text(progress_value.toString());
+          pbar.attr("style", "width: " + progress_value.toString() + "%;");
+
+          if (FRONT_INDEX === question_queue.length) {   // on the last questi:n!
             register_final($(this));
             $(this).remove();
           }
+
+          get_answer_data();
+          cur_question = question_queue[FRONT_INDEX];
+          render_question(cur_question);
       });
 
-      var q = question_queue.front();
-      question_queue.pop();
+      prev.on('click', function(e) {
+          if (CURRENT_QUESTION > 0) {
+              console.log("HERE");
+              console.log(FRONT_INDEX);
+              CURRENT_QUESTION--;
+              FRONT_INDEX--;
+              console.log(FRONT_INDEX);
+              var progress_value = (CURRENT_QUESTION/TOTAL * 100);
+              var pbar = $("#progress-bar");
+              pbar.attr("aria-valuenow", progress_value);
+              pbar.text(progress_value.toString());
+              pbar.attr("style", "width: " + progress_value.toString() + "%;");
+              cur_question = question_queue[FRONT_INDEX];
+              render_question(cur_question);
+          }
+      });
+
+      var q = question_queue[FRONT_INDEX];
 
       render_question(q);
 
@@ -338,12 +375,15 @@ textarea {
     </script>
 
 
+    <?php include('footer.php');?>
     
     
 </body>
 <?php else: ?>
 <body>
 404 NOT FOUND
+
+<?php include('footer.php');?>
 </body>
 <?php endif; ?>
 </html>

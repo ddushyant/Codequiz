@@ -14,13 +14,9 @@
             <input type="password" name="pass" class="form-control flat" placeholder="Password" required>
         </div>
 
-        <label class="checkbox" for="checkbox1">
-            <input type="checkbox" name="njit" value="true" data-toggle="checkbox" >
-            <span style="color: #1ABC9C;">NJIT login?</span>
-        </label>
 
         <button class="btn btn-embossed btn-primary btn-block" type="submit">Sign in</button>
-        <div id="flash" style="color: white;"></div>
+        <div id="flash" style="color: black;"></div>
     </form>
 
 </div> <!-- /container -->
@@ -45,7 +41,6 @@
             dataType: "json",
 
             success: function(data,stat,xhr) {
-                console.log("Success: ",data);
                 $('#flash').html(data['message']);
                 if (data['account_type'] == 'student') {
                   window.location.replace("http://web.njit.edu/~arm32/client/dash_student.php");
@@ -54,10 +49,7 @@
                 }
             },
             error: function(xhr,stat,err) {
-                if (err.status === 401) {
-                    console.log("Unauthorized");
-                    $('#flash').html("Unauthorized");
-                }
+                $('#flash').html("CodeQuiz Login Failed");
             },
         });
     });

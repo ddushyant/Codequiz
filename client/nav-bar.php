@@ -10,42 +10,63 @@
 
 	if (curPageName() == 'index.php'){ 
 		$first_li_class = 'active';
-    $viz2 = 'none';
-    $viz3 = 'none';
+        $viz2 = 'none';
+        $viz3 = 'none';
 		$home_url = $url . '/index.php';
 	} else { 
 		$first_li_class = 'none'; 
-	}
+    }
+
 	if (curPageName() == 'register.php'){ 
 		$second_li_class = 'active';
-    $viz2 = 'none';
-    $viz3 = 'none';
+        $viz2 = 'none';
+        $viz3 = 'none';
 		$home_url = $url. '/index.php';
 	} else { 
 		$second_li_class = 'none'; 
-	}
-	if (curPageName() == 'make_exam.php' || curPageName() == 'dash_instructor.php'){ 
-    if(curPageName()== 'dash_instructor.php'){ $exam_li_class = 'none';
-    } else { $exam_li_class = 'active';}
-    $viz1 = 'none';
-    $viz3 = 'none';
+    }
+
+    if (curPageName() == 'make_exam.php' || curPageName() == 'dash_instructor.php'){ 
+
+        if(curPageName() == 'dash_instructor.php') { 
+            $exam_li_class = 'none';
+        } else { 
+            $exam_li_class = 'active';
+        }
+
+        $viz1 = 'none';
+        $viz3 = 'none';
 		$home_url = $url. '/dash_instructor.php';
-  	$user_name = 'You are signed in as an Instructor';
+        $user_name = 'You are signed in as an Instructor';
 	} else { 
 		$exam_li_class = 'none';
-	}
+    }
+
 	if (curPageName() == 'make_question.php'){ 
 		$question_li_class = 'active';
-    $viz1 = 'none';
-    $viz3 = 'none';
-  	$user_name = 'You are signed in as an Instructor';
-		$home_url = $url. '/dash_instructor.php';
+        $viz1 = 'none';
+        $viz3 = 'none';
+        $user_name = 'You are signed in as an Instructor';
+        $home_url = $url. '/dash_instructor.php';
 	} else { 
 		$question_li_class = 'none';
-	}
+    }
+
+    /* I EDITED THIS JON TAKE NOTE! -- Arthur */
+    if (curPageName() === "release_grade.php") {
+        $grades_li_class = 'active';
+        $viz1 = 'none';
+        $viz3 = 'none';
+        $user_name = 'You are signed in as an Instructor';
+        $home_url = $url. '/dash_instructor.php';
+    }else {
+        $grades_li_class = "none";
+    }
+
   if(curPageName() == 'show_exam.php' || curPageName() == 'dash_student.php'){
     if(curPageName()== 'dash_student.php'){ $show_li_class = 'none';
     } else { $show_li_class = 'active';}
+    $review = 'none';
     $viz1 = 'none';
     $viz2 = 'none';
   	$user_name = 'You are signed in as a Student';
@@ -55,6 +76,7 @@
   }
   if(curPageName() == 'graded.php'){
     $graded_li_class = 'active';
+    $review = 'none';
     $viz1 = 'none';
     $viz2 = 'none';
   	$user_name = 'You are signed in as a Student';
@@ -64,12 +86,22 @@
   }
   if(curPageName() == 'take_exam.php'){
     $graded_li_class = 'none';
+    $review = 'none';
     $viz1 = 'none';
     $viz2 = 'none';
   	$user_name = 'You are signed in as a Student';
     $home_url = $url. '/dash_student.php';
   } else {
     $take_li_class = 'none';
+  }
+  if(curPageName() == 'review.php'){
+    $review_li_class = 'active';
+    $viz1 = 'none';
+    $viz2 = 'none';
+  	$user_name = 'You are signed in as a Student';
+    $home_url = $url. '/dash_student.php';
+  } else {
+    $review_li_class = 'none';
   }
 ?>
 
@@ -88,11 +120,19 @@
 		<ul class="nav navbar-nav" style="display:<?php  echo $viz2 ?>;">           
     <li class="<?php echo $exam_li_class;?>"><a href="<?php echo $url ?>/make_exam.php">Make Exam</a></li>
     <li class="<?php echo $question_li_class;?>"><a href="<?php echo $url ?>/make_question.php">Make Question</a></li>
+    <li class="<?php echo $grades_li_class;?>"><a href="<?php echo $url ?>/release_grade.php">Release Grade</a></li>
 		</ul>
 		<ul class="nav navbar-nav" style="display:<?php  echo $viz3 ?>;">           
     <li class="<?php echo $show_li_class;?>"><a href="<?php echo $url ?>/show_exam.php">Take Exam</a></li>
     <li class="<?php echo $graded_li_class;?>"><a href="<?php echo $url ?>/graded.php">Graded Exam</a></li>
+    <li class="<?php echo $review_li_class;?>" style="display: <?php echo $review ?>"><a href="<?php echo $url ?>/review.php">Review Exams</a></li>
 		</ul>
-		<p class="navbar-text navbar-right"><?php echo $user_name ?></p>
+        
+        <?php if($viz2 ==='none' && $viz3 === 'none') : ?>
+        <?php else : ?>
+            <button id="logout" class="btn btn-default btn-sm" style="float:right; margin-top: 7px;">Log Out</button>
+        <?php endif; ?>
+
+        <p class="navbar-text navbar-right" style="margin-right: 10px;"><?php echo $user_name ?></p>
 	</div>
 </nav>

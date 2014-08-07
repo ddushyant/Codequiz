@@ -25,15 +25,15 @@ button .out {
             <div class="form-group">
             <textarea class="form-control flat" name="question_body" rows="3" placeholder="Enter Question Body..."></textarea>
             </div>
+            <div class="form-group">
+            <textarea class="form-control flat" name="question_feedback" rows="3" placeholder="Enter Feedback..."></textarea>
+            </div>
 
             <div class="btn-group form-group">
                 <div class="dropdown">
                   <button class="btn dropdown-toggle btn-info" data-toggle="dropdown"><span id="lang">Select Language</span><span class="caret"></span></button>
                   <span class="dropdown-arrow"></span>
-                  <ul id="sub" name="subject" class="dropdown-menu">
-                    <li><a href="#">Javascript</a></li>
-                    <li><a href="#">Python</a></li>
-                    <li><a href="#">Java</a></li>
+                  <ul id="language_dropdown" name="subject" class="question_scroll dropdown-menu">
                   </u>
                 </div>
             </div>
@@ -42,10 +42,7 @@ button .out {
                 <div class="dropdown">
                   <button class="btn dropdown-toggle btn-info" data-toggle="dropdown"><span id="subject">Select Subject</span><span class="caret"></span></button>
                   <span class="dropdown-arrow"></span>
-                  <ul id="sub" name="subject" class="dropdown-menu">
-                    <li><a href="#">Variables</a></li>
-                    <li><a href="#">Syntax</a></li>
-                    <li><a href="#">Classes</a></li>
+                  <ul id="subject_dropdown" name="subject" class="question_scroll dropdown-menu">
                   </u>
                 </div>
             </div>
@@ -54,7 +51,7 @@ button .out {
 				<div class="dropdown">
 					<button class="btn dropdown-toggle btn-info" data-toggle="dropdown"><span id="select">Select Question Type</span><span class="caret"></span></button>
 					<span class="dropdown-arrow"></span>
-                    <ul class="dropdown-menu">
+                    <ul id="questiontype_dropdown" class="dropdown-menu">
 						<li><a href="#" id="action-1" value="multi">Multiple Choice</a></li>
 						<li><a href="#" id="action-2" value="true-false">True/False</a></li>
 						<li><a href="#" id="action-3" value="fill">Fill In the Blank</a></li>
@@ -88,18 +85,58 @@ button .out {
   
     <script type="text/javascript">
 
- $(function() {
-   $( "#slider" ).slider({
-     value:3,
-       min: 1,
-       max: 5,
-       step: 1,
-       slide: function( event, ui ) {
-         $( "#currentvalue" ).val( ui.value );
-       }
-   });
-   $( "#currentvalue" ).val($( "#slider" ).slider( "value" ) );
- });
+    $.ajax({ 
+        type: "GET",
+        url: "http://web.njit.edu/~jdl38/application_server/app.php/select_data",
+        dataType: "json",
+        success: function(d) {
+
+            var languages_dropdown = $('#language_dropdown');
+            var subject_dropdown = $('#subject_dropdown');
+
+            d['languages'].forEach(function(e,i,a) {
+                languages_dropdown.append('<li><a data-language="' + e.id + '">' + e.name + '</a></li>');
+            });
+
+            d['subjects'].forEach(function(e,i,a) {
+                subject_dropdown.append('<li><a data-subject="' + e.id + '">' + e.name + '</a></li>');
+            });
+
+            $("#questiontype_dropdown li a").click(function(){
+              $('#select').text($(this).text());
+              $('#select').val($(this).text());
+            });
+
+            $("#subject_dropdown li a").click(function(){
+              var subject_span = $("#subject");
+              subject_span.text($(this).text());
+              subject_span.data("subject", $(this).data("subject"));
+              console.log(subject_span.data("subject"));
+            });
+            $("#language_dropdown li a").click(function(){
+              var language_span = $("#lang");
+              language_span.text($(this).text());
+              language_span.data("language", $(this).data("language"));
+              console.log(language_span.data("language"));
+            });
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+
+     $(function() {
+       $( "#slider" ).slider({
+         value:3,
+           min: 1,
+           max: 5,
+           step: 1,
+           slide: function( event, ui ) {
+             $( "#currentvalue" ).val( ui.value );
+           }
+       });
+       $( "#currentvalue" ).val($( "#slider" ).slider( "value" ) );
+     });
 
 
     function send_data(answers) {
@@ -109,11 +146,13 @@ button .out {
 
             request['title'] = $("form input[name='question_title']").val();
             request['spec'] = $("form textarea[name='question_body']").val();
-            request['subject'] = $("form span[id='subject']").text();
-            request['language'] = $("form span[id='lang']").text();
+            request['subject'] = $("#subject").data("subject");
+            request['language'] = $("#lang").data("language");
+            request['feedback'] = $("form textarea[name='question_feedback']").val();
             request['qtype'] = qtype.val();
             request['answers'] = answers;
             request['difficulty'] = $("form input[id='currentvalue']").val();
+            console.log(request);
 
             if (answers.length > 0) {
                 $.ajax({
@@ -123,7 +162,8 @@ button .out {
                     dataType: 'json',
                     data: JSON.stringify(request),
                     success: function(data,stat,xhr) {
-                        $('#flash').html(data['message']);
+                        alert(data['message']);
+                        window.location = window.location.pathname;
                     },
                     error: function(xhr,stat,err) {
                         console.log("err", err);
@@ -276,16 +316,6 @@ button .out {
     }
 
 
-        $(".dropdown-menu li a").click(function(){
-
-          $(this).parents(".btn-group").find('#lang').text($(this).text());
-          $(this).parents(".btn-group").find('#lang').val($(this).text());
-          $(this).parents(".btn-group").find('#select').text($(this).text());
-          $(this).parents(".btn-group").find('#select').val($(this).text());
-          $(this).parents(".btn-group").find('#subject').text($(this).text());
-          $(this).parents(".btn-group").find('#subject').val($(this).text());
-
-        });
 
         // multiple choice
 	    jQuery("#action-1").click(function(e){
@@ -323,5 +353,6 @@ button .out {
             register_coding_hooks();
 		});
 	</script>
+<?php include('footer.php');?>
 </body>
 </html>
