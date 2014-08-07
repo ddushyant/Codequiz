@@ -14,9 +14,9 @@ class MySQL {
       if (!self::$instance) {
         try {
             self::$instance = new PDO(
-                'mysql:host=sql.njit.edu;dbname=arm32;charset=utf8',
                 '',
                 '',
+                ''
                 array(
                     PDO::ATTR_EMULATE_PREPARES => false,
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

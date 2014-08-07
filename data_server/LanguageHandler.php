@@ -6,7 +6,7 @@ class LanguageHandler {
         try {
             $conn = MySQL::getInstance();
             $conn->beginTransaction();
-            $query = $conn->prepare("SELECT id,name FROM language;");
+            $query = $conn->prepare("SELECT id,name FROM language ORDER BY name;");
             $query->execute();
             $results = $query->fetchAll(PDO::FETCH_ASSOC);
             $conn->commit();

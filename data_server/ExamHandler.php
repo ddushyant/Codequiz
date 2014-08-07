@@ -30,7 +30,7 @@ class ExamHandler {
 
       $n = isset($_GET['n']) ? $_GET['n'] : '10';
 
-      $query_text = "SELECT e.id,e.title FROM exam e LIMIT :n";
+      $query_text = "SELECT e.id,e.title FROM exam e ORDER BY e.id DESC";
       try {
         $conn = MySQL::getInstance();
 

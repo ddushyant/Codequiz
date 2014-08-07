@@ -10,19 +10,52 @@ class QuestionCreateHandler {
     );
 
     if (is_null($qid)) {
-         try {
-             $query = MySQL::getInstance()
-                    ->prepare(
+         //$start = isset($_GET["start"]) ? $_GET["start"] : 0;
+         //$end = isset($_GET["end"]) ? $_GET["end"] : 20;
+
+         $query_text =
                       "SELECT id,title,spec,subject,qtype
-                      FROM question
-                      LIMIT 20
-                      "
-                     );
-             $query->execute();
+                      FROM question";
 
-             $questions = $query->fetchAll(PDO::FETCH_ASSOC);
+         $subject = $_GET["subject"];
+         $difficulty = $_GET["difficulty"];
+         $language = $_GET["language"];
+         $qtype = $_GET["qtype"];
 
-             $response['questions'] = $questions;
+         if (!is_null($subject)) $params['subject'] = $subject;
+         if (!is_null($difficulty)) $params['difficulty'] = $difficulty;
+         if (!is_null($language)) $params['language'] = $language;
+         if (!is_null($qtype)) $params['qtype'] = $qtype;
+
+         $count = 0;
+
+         foreach ($params as $k => $v) {
+             if ($count > 0) {
+                 $query_text .= " AND $k = :$k";
+             }else {
+                 $query_text .= " WHERE $k = :$k";
+             }
+             $count = $count + 1;
+         }
+
+         //$query_text .= " LIMIT :start,:end";
+
+        try {
+            $query = MySQL::getInstance()
+                ->prepare($query_text);
+            if (!is_null($subject)) $query -> bindValue(":subject", $subject, PDO::PARAM_INT); 
+            if (!is_null($difficulty)) $query -> bindValue(":difficulty", $difficulty, PDO::PARAM_INT); 
+            if (!is_null($language))  $query -> bindValue(":language", $language, PDO::PARAM_INT); 
+             if (!is_null($qtype)) $query -> bindValue(":qtype", $qtype, PDO::PARAM_STR); 
+                 
+            //$query -> bindValue(":start", $start, PDO::PARAM_INT); 
+            //$query -> bindValue(":end", $end, PDO::PARAM_INT); 
+
+            $query->execute();
+
+            $questions = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            $response['questions'] = $questions;
              
 
          } catch (PDOException $e) {
@@ -38,12 +71,15 @@ class QuestionCreateHandler {
 
          die(json_encode($response));
     } else {
-         try {
+        try {
+            // changes made: added join, answer_value, answer_key, a.correct=TRUE
              $query = MySQL::getInstance()
                     ->prepare(
-                      "SELECT id,title,spec,subject,qtype
-                       FROM question
-                       WHERE id=:qid;
+                      "SELECT q.id,q.title,q.spec,q.subject,q.qtype, a.answer_value, a.answer_key
+                       FROM question q
+                       JOIN answer a ON q.id = a.question 
+                       WHERE q.id=:qid
+                       AND a.correct = TRUE;
                       "
                      );
              $query->bindValue(":qid", $qid, PDO::PARAM_INT);
@@ -81,7 +117,8 @@ class QuestionCreateHandler {
         $language = $data['language'];
         $subject  = $data['subject'];
         $qtype    = $data['qtype'];
-
+        $feedback = $data['feedback'];
+        $difficulty = $data['difficulty'];
         $answers  = $data['answers'];
 
         $response = array();
@@ -100,16 +137,18 @@ class QuestionCreateHandler {
 
             $query = $conn
                 ->prepare(
-                    "INSERT INTO question (title, spec, subject, language, qtype)
-                     VALUES(:title,:spec,(SELECT id FROM subject WHERE name=:subject),(SELECT id FROM language WHERE name=:language),:qtype);
+                    "INSERT INTO question (title, spec, subject, language, qtype, difficulty, feedback)
+                     VALUES ( :title, :spec, :subject, :language, :qtype, :difficulty, :feedback );
                     "
                 );
             $query->bindValue(':title',   $title, PDO::PARAM_STR);
             $query->bindValue(':spec',    $spec, PDO::PARAM_STR);
             $query->bindValue(':language', $language, PDO::PARAM_STR);
-            $query->bindValue(':subject', $subject, PDO::PARAM_STR);
             $query->bindValue(':qtype',   $qtype, PDO::PARAM_STR);
-
+            $query->bindValue(':subject', $subject, PDO::PARAM_STR);
+            $query->bindValue(':difficulty', $difficulty, PDO::PARAM_INT);
+            $query->bindValue(':feedback', $feedback, PDO::PARAM_STR);
+            
             /* BEGIN question create transaction */
             $conn->beginTransaction();
 
@@ -127,7 +166,6 @@ class QuestionCreateHandler {
             $params = array();
 
             foreach ($answers as $a) {
-
 
                 $query2_text .= '(';
                 $params[] = $question_id;
