@@ -18,18 +18,18 @@ require('ExamReviewHandler.php');
 require('QuestionHandler.php');
 
 Toro::serve(array(
-	"/auth" => "AuthHandler",
-	"/register" => "RegisterHandler",
-	"/exammaker" => "ExamMakerHandler",
-	"/question_data" => "QuestionDataHandler",
-    "/question" => "QuestionHandler",
-	"/user_info"    => "UserInfoHandler",
-    "/exam"         => "ExamHandler",
-    "/exam/:number" => "ExamHandler",
-    "/grade"        => "GradeHandler",
-    "/select_data"  => "SelectHandler",
-    "/logout" => "LogOut",
-    "/examreview/:number" => "ExamReviewHandler"
+    "/auth"      		=> "AuthHandler",
+    "/register" 		=> "RegisterHandler",
+    "/exammaker" 		=> "ExamMakerHandler",
+    "/question_data" 		=> "QuestionDataHandler",
+    "/question" 		=> "QuestionHandler",
+    "/user_info"	  	=> "UserInfoHandler",
+    "/exam"         		=> "ExamHandler",
+    "/exam/:number" 		=> "ExamHandler",
+    "/grade"        		=> "GradeHandler",
+    "/select_data"  		=> "SelectHandler",
+    "/logout" 			=> "LogOut",
+    "/examreview/:number" 	=> "ExamReviewHandler"
 ));
 
 ?>
