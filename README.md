@@ -30,7 +30,7 @@ In order to meet these deadlines, we did horrible, terrible, unspeakable things.
 What Does It Do?
 ================
 
-The goal of [CodeQuiz]() was to create a similar service to (CodingBat)[http://codingbat.com/]. Basically, instructors can create exams for students that are multiple choice, coding, fill in the blank, and true-false. The site centers around programming/computer science questions. Students can log in and take exams, and the results must be released by the instructors.
+The goal of [CodeQuiz]() was to create a similar service to [CodingBat](http://codingbat.com/). Basically, instructors can create exams for students that are multiple choice, coding, fill in the blank, and true-false. The site centers around programming/computer science questions. Students can log in and take exams, and the results must be released by the instructors.
 
 Requirements
 ============
