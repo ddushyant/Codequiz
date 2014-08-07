@@ -46,7 +46,13 @@ class AuthHandler {
                 die(json_encode($response));
 
 			} else {
-			echo '{"message":"CodeQuiz Login Failed"}';
+                http_response_code(401);
+                $response = array(
+                    "message" => "CodeQuiz Login Failed",
+                    "status" => "error",
+                    "account_type" => $data['account_type'],
+                );
+                die(json_encode($response));
 			}
 		}
 
